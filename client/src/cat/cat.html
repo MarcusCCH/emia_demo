@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Widget test</title>
+    <div class="cat-widget">
+        <div class="cat">
+            <img class="cat-image" src="cat-bg.png" alt="Virtual Cat">
+            <img class="cat-body" src="cat-body.png" alt="Virtual Cat">
+            <div class="cat-eyes">
+                <img class="cat-eyesR" src="cat-rightEye.png" alt="Virtual Cat">
+                <img class="cat-eyesL" src="cat-leftEye.png" alt="Virtual Cat">
+            </div>
+            <div class="cat-legs">
+                <img class="cat-legsL" src="cat-leftLeg.png" alt="Virtual Cat">
+                <img class="cat-legsR" src="cat-rightLeg.png" alt="Virtual Cat">
+                <img class="cat-pawsL" src="cat-leftPaw.png" alt="Virtual Cat">
+                <img class="cat-pawsR" src="cat-rightPaw.png" alt="Virtual Cat">
+            </div>
+            <img class="cat-tail" src="cat-tail.png" alt="Virtual Cat">
+        </div>
+
+        <div class="controls">
+            <button class="btn feed-btn">Feed</button>
+            <button class="btn play-btn">Play</button>
+            <button class="btn clean-btn">Clean</button>
+        </div>
+
+        <div id="clock1"></div>
+    </div>
+
+    <div class="mirror">
+        <div class="cat-widget">
+            <div class="cat">
+                <img class="cat-image" src="cat-bg.png" alt="Virtual Cat">
+                <img class="cat-body" src="cat-body.png" alt="Virtual Cat">
+                <div class="cat-eyes">
+                    <img class="cat-eyesR" src="cat-rightEye.png" alt="Virtual Cat">
+                    <img class="cat-eyesL" src="cat-leftEye.png" alt="Virtual Cat">
+                </div>
+                <div class="cat-legs">
+                    <img class="cat-legsL" src="cat-leftLeg.png" alt="Virtual Cat">
+                    <img class="cat-legsR" src="cat-rightLeg.png" alt="Virtual Cat">
+                    <img class="cat-pawsL" src="cat-leftPaw.png" alt="Virtual Cat">
+                    <img class="cat-pawsR" src="cat-rightPaw.png" alt="Virtual Cat">
+                </div>
+                <img class="cat-tail" src="cat-tail.png" alt="Virtual Cat">
+            </div>
+
+            <div class="controls">
+                <button class="btn feed-btn">Feed</button>
+                <button class="btn play-btn">Play</button>
+                <button class="btn clean-btn">Clean</button>
+            </div>
+            <div id="clock2"></div>
+        </div>
+    </div>
+
+    <style>
+        .mirror {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: -200px;
+            left: 0;
+            overflow: hidden;
+            transform: scaleY(-1);
+            transform-origin: left;
+        }
+
+        #clock1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #clock2 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .cat-widget {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .cat {
+            position: relative;
+        }
+
+        .cat-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .cat-body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+        }
+
+        .cat-eyes {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1;
+            width: 10%;
+            height: auto;
+        }
+
+        .cat-eyesR {
+            top: 5px;
+            right: 20px;
+            position: relative;
+            animation: blink1 5s infinite;
+        }
+
+        .cat-eyesL {
+            position: relative;
+            animation: blink2 5s infinite;
+        }
+
+
+
+        @keyframes blink1 {
+            0% {
+                transform: scaleX(1);
+            }
+
+            10% {
+                transform: scaleX(0.2);
+            }
+
+            30% {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes blink2 {
+            0% {
+                transform: scaleX(1);
+                transform: scaleY(1);
+            }
+
+            10% {
+                transform: scaleX(0.1);
+                transform: scaleY(0.4);
+            }
+
+            30% {
+                transform: scaleX(1);
+                transform: scaleY(1);
+            }
+        }
+
+        .cat-legsL {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            animation: walk1 2s infinite;
+        }
+
+        .cat-legsR {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            animation: walk2 2s infinite;
+        }
+
+        .cat-pawsL {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            animation: walk3 2s infinite;
+        }
+
+        .cat-pawsR {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            animation: walk4 2s infinite;
+        }
+
+        @keyframes walk1 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(20deg) translate(10px, 5px);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes walk2 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(30deg) translate(-10px, 20px);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes walk3 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(20deg) translate(10px, -20px);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes walk4 {
+            0% {
+                transform: rotate(5deg);
+            }
+
+            50% {
+                transform: rotate(20deg) translate(0px, -20px);
+                transform-origin: top right - 0;
+            }
+
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .cat-tail {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            z-index: 0;
+            width: 100%;
+            height: auto;
+            animation: move 10s infinite;
+        }
+
+        @keyframes move {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(30deg) translate(0px, 50px);
+                transform-origin: center;
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="cat.js"></script>
+</body>
+
+</html>
