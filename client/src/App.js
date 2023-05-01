@@ -4,12 +4,12 @@ import NavBar from "./NavBar";
 import Info from "./Info";
 import Login from "./Login";
 import { useState, useEffect } from "react";
-const pages = [<Home />, <Info />, <Login />];
 
 function App() {
   const [pageIdx, setPageIdx] = useState(0);
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const pages = [<Home loginStatus={loginStatus} />, <Info />, <Login />];
   async function fetchLoginStatus() {
     const resposne = await fetch("/loginStatus");
     const data = await resposne.json();

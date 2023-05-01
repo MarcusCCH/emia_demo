@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const User = require("./User");
+const Schema = mongoose.Schema;
 const petSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -25,6 +26,10 @@ const petSchema = new mongoose.Schema({
     //distribution among 15 minutes, 30 minutes, 45 minutes
     type: Array,
     default: [],
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 

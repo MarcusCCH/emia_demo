@@ -35,12 +35,12 @@ mongoose
   )
   .then(() => {
     console.log("connected");
-    Pet.updateMany(
-      {},
-      { $set: { totalFocusSession: 10 } },
-      { multi: true, upsert: true }
-    );
-    console.log("finished");
+    // Pet.updateMany(
+    //   {},
+    //   { $set: { totalFocusSession: 10 } },
+    //   { multi: true, upsert: true }
+    // );
+    // console.log("finished");
   });
 
 /*create default pets*/
@@ -62,8 +62,20 @@ async function createPets() {
 }
 
 /*database cleaning*/
-// User.deleteMany({});
-// Pet.deleteMany({});
+User.deleteMany({})
+  .then(() => {
+    console.log("deleted all users");
+  })
+  .catch((err) => {
+    console.log(`error deleting users: ${err}`);
+  });
+Pet.deleteMany({})
+  .then(() => {
+    console.log("deleted all pets");
+  })
+  .catch((err) => {
+    console.log(`error deleting pets: ${err}`);
+  });
 
 /* ----------------login and register---------------- */
 var sess = {
@@ -114,22 +126,39 @@ app.get("/loginStatus", (req, res) => {
 
 app.post("/register", async (req, res) => {
   console.log(`user created: ${req.body}`);
+  //TODO: add error handling (if pets creation is not success, how to handle user creation?)
   const petsData = await createPets();
   console.log(`petsData: ${petsData}`);
-  User.create({
-    username: req.body.username,
-    password: req.body.password,
-    sessionNumber: 0,
-    favouritePet: null,
-    petsData: petsData,
-  })
-    .then((user) => {
-      console.log(`created user ${user}`);
-    })
-    .catch((err) => {
-      console.error(`${err} at /register`);
+  //TODO: similarly, handle the error
+  let createdUser;
+  try {
+    createdUser = await User.create({
+      username: req.body.username,
+      password: req.body.password,
+      sessionNumber: 0,
+      favouritePet: null,
+      petsData: petsData,
     });
-  res.redirect("/");
+  } catch (error) {
+    console.log(`error creating user: ${error}`);
+  } finally {
+    console.log(`created user: ${createdUser}`);
+  }
+
+  //update pets reference to user
+  for (let i = 0; i < petsData.length; i++) {
+    const updatedPet = await Pet.updateOne(
+      { _id: petsData[i]._id },
+      { $set: { user: createdUser } }
+    );
+    console.log(`updated pet: ${updatedPet}`);
+  }
+  req.login(createdUser, (err) => {
+    if (err) {
+      console.log(err);
+    }
+    return res.redirect("/");
+  });
 });
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
