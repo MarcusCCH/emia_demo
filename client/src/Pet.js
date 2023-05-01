@@ -10,6 +10,7 @@ export const petOptions = [
     icon: (
       <Spline scene="https://draft.spline.design/p6F3m-93MDr228La/scene.splinecode" />
     ),
+    image: <img src="/cat.jpeg" alt="cat" />,
   },
 
   {
@@ -18,11 +19,13 @@ export const petOptions = [
     icon: (
       <Spline scene="https://prod.spline.design/B5tUZBAkQRrDGskz/scene.splinecode" />
     ),
+    image: <img src="/pig.png" alt="pig" />,
   },
 
   {
     label: "hamster",
     value: 2,
     icon: <p> Hamster icon </p>,
+    image: <img src="/hamster.jpeg" alt="hamster" />,
   },
 ];

@@ -11,6 +11,24 @@
     height: 100vh;
 }
 
+.container-horizontal {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.pet-card {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 1%;
+}
+.pet-card img{
+    width:100px;
+    height:100px;
+}
+
 .App-logo {
     height: 40vmin;
     pointer-events: none;

@@ -194,7 +194,14 @@ app.get("/info", isLoggedIn, (req, res) => {
       console.log(err);
     });
 });
-
+app.get("/info/:petIdx", isLoggedIn, async (req, res) => {
+  const foundPet = await Pet.findOne({
+    user: req.user._id,
+    type: petList[req.params.petIdx],
+  });
+  console.log(foundPet);
+  res.json(foundPet);
+});
 //update session data
 const timeOptions = [15, 30, 45]; //just for reference
 const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
@@ -261,8 +268,8 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
 });
 /* --------- hosting --------*/
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-  });
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
