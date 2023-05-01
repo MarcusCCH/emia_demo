@@ -218,18 +218,16 @@ const updateHistogram = async (pet, sessionPeriod) => {
       currentPet.histogram[sessionPeriod / 15 - 1]
     }`
   );
-  try {
-    let updatedPet = await pet.update({ histogram: updatedPet.histogram });
-    console.log(`updated histogram of pet: ${updatedPet}`);
-  } catch {
-    (err) => {
-      console.log(err);
-    };
-  }
+  let updatedPet = await Pet.findByIdAndUpdate(
+    { _id: pet._id },
+    { histogram: currentPet.histogram }
+  );
+  console.log(`updated histogram of pet: ${updatedPet}`);
 };
 app.post("/updateSessionData", isLoggedIn, async (req, res) => {
   console.log("@ updateSessionData route");
   const { sessionStatus, sessionPeriod, petIdx } = req.body;
+  console.log(sessionPeriod);
   let pet;
   if (sessionStatus == true) {
     //increment success sessions

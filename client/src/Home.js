@@ -24,11 +24,12 @@ function Home({ loginStatus }) {
   const [session, setSession] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [sessionEndTime, setSessionEndTime] = useState(0);
-  var do_once = 1;
   async function updateSessionData(_sessionStatus) {
+    console.log("fetch");
     fetch("/updateSessionData", {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -40,10 +41,9 @@ function Home({ loginStatus }) {
   }
 
   const checkSessionStatus = () => {
-    if (sessionEndTime < currentTime) {
-      if (loginStatus && session && do_once) {
+    if (sessionEndTime < currentTime && session) {
+      if (loginStatus) {
         updateSessionData(true);
-        do_once = 0;
       }
 
       setSession(false);
@@ -81,7 +81,7 @@ function Home({ loginStatus }) {
   }
 
   const displayPet = () => {
-    checkSessionStatus(); //check if the session has ended or not
+    if (session) checkSessionStatus(); //check if the session has ended or not
     return petWidgets[pet];
   };
 
