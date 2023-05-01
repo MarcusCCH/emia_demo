@@ -22,10 +22,10 @@ const petSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  //distribution among 15 minutes, 30 minutes, 45 minutes
   histogram: {
-    //distribution among 15 minutes, 30 minutes, 45 minutes
-    type: Array,
-    default: [],
+    type: [Number],
+    default: [0, 0, 0],
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

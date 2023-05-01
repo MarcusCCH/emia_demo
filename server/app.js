@@ -61,21 +61,21 @@ async function createPets() {
   return petsData;
 }
 
-/*database cleaning*/
-User.deleteMany({})
-  .then(() => {
-    console.log("deleted all users");
-  })
-  .catch((err) => {
-    console.log(`error deleting users: ${err}`);
-  });
-Pet.deleteMany({})
-  .then(() => {
-    console.log("deleted all pets");
-  })
-  .catch((err) => {
-    console.log(`error deleting pets: ${err}`);
-  });
+/* DANGER: do not uncomment below as it is database cleaning after each testings*/
+// User.deleteMany({})
+//   .then(() => {
+//     console.log("deleted all users");
+//   })
+//   .catch((err) => {
+//     console.log(`error deleting users: ${err}`);
+//   });
+// Pet.deleteMany({})
+//   .then(() => {
+//     console.log("deleted all pets");
+//   })
+//   .catch((err) => {
+//     console.log(`error deleting pets: ${err}`);
+//   });
 
 /* ----------------login and register---------------- */
 var sess = {
@@ -193,7 +193,11 @@ app.get("/info", isLoggedIn, (req, res) => {
       console.log(err);
     });
 });
+
+//update session data
+const timeOptions = [15, 30, 45]; //just for reference
 const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
+
 const checkEvolutionStage = async (pet) => {
   let updatedPet = pet;
   if (pet.totalSuccessFulSession > evolutionStagesXp[pet.evolutionStage]) {
@@ -204,6 +208,23 @@ const checkEvolutionStage = async (pet) => {
     console.log("pet evolved: ", updatedPet);
   } else {
     console.log("pet not evolved");
+  }
+};
+const updateHistogram = async (pet, sessionPeriod) => {
+  let currentPet = pet;
+  ++currentPet.histogram[sessionPeriod / 15 - 1];
+  console.log(
+    `@updatehistogram function, current pet's histogram: ${
+      currentPet.histogram[sessionPeriod / 15 - 1]
+    }`
+  );
+  try {
+    let updatedPet = await pet.update({ histogram: updatedPet.histogram });
+    console.log(`updated histogram of pet: ${updatedPet}`);
+  } catch {
+    (err) => {
+      console.log(err);
+    };
   }
 };
 app.post("/updateSessionData", isLoggedIn, async (req, res) => {
@@ -222,6 +243,7 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
         },
       }
     );
+    updateHistogram(pet, sessionPeriod);
   } else {
     //increment failed sessions
     console.log("increment failed sessions");
