@@ -193,12 +193,49 @@ app.get("/info", isLoggedIn, (req, res) => {
       console.log(err);
     });
 });
+const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
+const checkEvolutionStage = async (pet) => {
+  let updatedPet = pet;
+  if (pet.totalSuccessFulSession > evolutionStagesXp[pet.evolutionStage]) {
+    updatedPet = await Pet.findOneAndUpdate(
+      { _id: pet._id },
+      { $inc: { evolutionStage: 1 } }
+    );
+    console.log("pet evolved: ", updatedPet);
+  } else {
+    console.log("pet not evolved");
+  }
+};
 app.post("/updateSessionData", isLoggedIn, async (req, res) => {
   console.log("@ updateSessionData route");
-  console.log(req.body);
-  const { sessionStatus, sessionPeriod, type } = req.body;
-  const user = await User.findOne({ username: req.user.username });
-  const pet = await Pet.findById({ _id: user.petsData[type] });
+  const { sessionStatus, sessionPeriod, petIdx } = req.body;
+  let pet;
+  if (sessionStatus == true) {
+    //increment success sessions
+    console.log("increment success sessions");
+    pet = await Pet.findOneAndUpdate(
+      { user: req.user._id, type: petList[petIdx] },
+      {
+        $inc: {
+          totalFocusSession: sessionPeriod,
+          totalSuccessfulSession: sessionPeriod,
+        },
+      }
+    );
+  } else {
+    //increment failed sessions
+    console.log("increment failed sessions");
+    pet = await Pet.findOneAndUpdate(
+      { user: req.user._id, type: petList[petIdx] },
+      {
+        $inc: {
+          totalFocusSession: sessionPeriod,
+          totalFailedSession: sessionPeriod,
+        },
+      }
+    );
+  }
+  checkEvolutionStage(pet);
   console.log(pet);
 });
 /* --------- hosting --------*/

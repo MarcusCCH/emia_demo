@@ -34,7 +34,7 @@ function Home({ loginStatus }) {
       body: JSON.stringify({
         sessionStatus: _sessionStatus,
         sessionPeriod: sessionPeriod,
-        type: pet,
+        petIdx: pet,
       }),
     });
   }
