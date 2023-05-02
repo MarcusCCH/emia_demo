@@ -29,7 +29,13 @@ export const petOptions = [
   {
     label: "hamster",
     value: 2,
-    icon: "/hamster.jpeg",
+    icon: (
+      <img
+        src="/hamster.jpeg"
+        alt="hamster"
+        style={{ width: "100px", height: "100px" }}
+      />
+    ),
     evolutionWidgets: [
       <iframe
         width="400"

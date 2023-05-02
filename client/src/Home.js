@@ -37,11 +37,15 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
       }),
     });
   }
-
+  const resetSession = () => {
+    setPetYcoor(Y_DEFAULT_W_DEVICE);
+    setUsingDevice(true);
+  };
   const checkSessionStatus = () => {
     if (sessionEndTime < currentTime && session) {
       if (loginStatus) {
         updateSessionData(true);
+        resetSession();
       }
 
       setSession(false);
@@ -99,6 +103,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     setSession(false);
     setSBMessage("Session stopped!");
     setOpenSB(true);
+    resetSession();
   };
 
   //move the pets during session
@@ -106,7 +111,6 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     if (newY >= Y_LOW && newY <= Y_HIGH) {
       setPetYcoor(newY);
     } else {
-      // TODO: add error message
       setSBMessage("Pet cannot go any further!");
       setOpenSB(true);
     }
@@ -120,7 +124,6 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           <Button onClick={() => handleYCoorChange(petYcoor + Y_OFFSET)}>
             <AddCircleOutlineIcon />
           </Button>
-          {/* <p>{petYcoor}</p> */}
           <Button onClick={() => handleYCoorChange(petYcoor - Y_OFFSET)}>
             <RemoveCircleIcon />
           </Button>
