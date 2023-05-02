@@ -33,7 +33,7 @@
 }
 
 .pet-card {
-    border: 1px solid black;
+    border: 1px solid rgb(183, 183, 183);
     border-radius: 5px;
     padding: 1%;
 }
