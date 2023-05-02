@@ -87,7 +87,7 @@ function Home({ loginStatus }) {
 
   const startSession = () => {
     setSession(true);
-    setSessionEndTime(currentTime + sessionPeriod);
+    setSessionEndTime(currentTime + sessionPeriod * 60);
   };
   const stopSession = () => {
     updateSessionData(false);

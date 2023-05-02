@@ -1,6 +1,6 @@
 import Pig from "./Pig";
 import Hamster from "./Hamster";
-import FireBird from "./FireBird";
+import FireBird from "./cat/Cat";
 import Spline from "@splinetool/react-spline";
 import { useState, useRef } from "react";
 // import { Stats, OrbitControls, Circle } from "@react-three/drei";
@@ -22,7 +22,7 @@ export const petOptions = [
     label: "pig",
     value: 1,
     icon: (
-      <Spline scene="https://prod.spline.design/B5tUZBAkQRrDGskz/scene.splinecode" />
+      <Spline scene="https://draft.spline.design/m5pP0OsbeTdIhdOC/scene.splinecode" />
     ),
     image: <img src="/pig.png" alt="pig" />,
   },

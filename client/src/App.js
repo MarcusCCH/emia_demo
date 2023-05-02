@@ -25,10 +25,10 @@ function App() {
   });
   const welcomeWidget = loginStatus ? (
     <div>
-      <h1 style={{ textAlign: "center" }}> Welcome back! {currentUser}</h1>{" "}
+      <p style={{ textAlign: "center" }}> Welcome back!{currentUser} </p>{" "}
     </div>
   ) : (
-    <></>
+    <> </>
   );
 
   return (
@@ -38,8 +38,7 @@ function App() {
         loginStatus={loginStatus}
         setLoginStatus={setLoginStatus}
       />{" "}
-      {welcomeWidget}
-      {pages[pageIdx]}{" "}
+      {welcomeWidget} {pages[pageIdx]}{" "}
     </div>
   );
 }

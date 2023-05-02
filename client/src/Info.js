@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { petOptions } from "./Pet";
+
 function Info() {
   const [userInfo, setUserInfo] = useState(null);
   const [petInfo, setPetInfo] = useState([]);
@@ -20,6 +21,7 @@ function Info() {
       let info = await fetchPetInfo(i);
       _info.push(info);
       // console.log(`pet ${i} info: ${JSON.stringify(info)}`);
+      // setPetInfo([...petInfo, info]);
       setPetInfo(_info);
     }
   };
@@ -33,12 +35,12 @@ function Info() {
     <div>
       <ul>
         <li> Username: {userInfo.username} </li>{" "}
-        <li> Session Number: {userInfo.sessionNumber} </li>{" "}
+        {/* <li> Session Number: {userInfo.sessionNumber} </li>{" "}
         <li>
           {" "}
           Favourite Pet:{" "}
           {userInfo.favouritePet ? userInfo.favouritePet : "None"}{" "}
-        </li>{" "}
+        </li>{" "} */}
       </ul>{" "}
     </div>
   ) : (
@@ -49,33 +51,35 @@ function Info() {
 
   return (
     <div class="container">
-      <h1> Info page </h1> {userInfoWidget}
+      <h1> Info page </h1> {userInfoWidget}{" "}
       <div class="container-horizontal">
+        {" "}
         {petOptions.map((pet, index) => (
           <div key={index} class="pet-card">
+            {" "}
             {petInfo[index] ? (
               <div>
-                {pet.image}
-                <h2>{petInfo[index].type}</h2>
+                {" "}
+                {pet.image} <h2> {petInfo[index].type} </h2>{" "}
                 <p>
-                  successful session: {petInfo[index].totalSuccessfulSession}
-                </p>
+                  successful session: {petInfo[index].totalSuccessfulSession}{" "}
+                </p>{" "}
                 <p>
                   success rate:{" "}
                   {(
                     (petInfo[index].totalSuccessfulSession /
                       petInfo[index].totalFocusSession) *
                     100
-                  ).toFixed()}
+                  ).toFixed()}{" "}
                   %
-                </p>
+                </p>{" "}
               </div>
             ) : (
-              <h2>loading {petOptions[index].label}</h2>
-            )}
+              <h2> loading {petOptions[index].label} </h2>
+            )}{" "}
           </div>
-        ))}
-      </div>
+        ))}{" "}
+      </div>{" "}
     </div>
   );
 }

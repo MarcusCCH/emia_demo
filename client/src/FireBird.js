@@ -13,7 +13,6 @@ function Pig() {
   return (
     <div>
       <h1> Fire Bird </h1>{" "}
-      <div class="viewer"> {evolutionStageWidgets[evolutionStage]} </div>{" "}
       <button
         onClick={() => {
           if (evolutionStage < evolutionStageWidgets.length - 1)
@@ -23,6 +22,7 @@ function Pig() {
         Evolve{" "}
       </button>{" "}
       <p> current stage: {evolutionStage} </p>{" "}
+      <div class="viewer"> {evolutionStageWidgets[evolutionStage]} </div>{" "}
     </div>
   );
 }
