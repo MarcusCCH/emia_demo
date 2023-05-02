@@ -1,3 +1,7 @@
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+
 function Login() {
   return (
     <div class="container">
@@ -9,8 +13,12 @@ function Login() {
       >
         <input type="text" placeholder="Name" name="username" />
         <input type="text" placeholder="Password" name="password" />
-        <button> Submit </button>{" "}
+        <Button variant="outlined" type="submit">
+          {" "}
+          Submit{" "}
+        </Button>
       </form>{" "}
+      <Divider />
       <h1> Register: </h1>{" "}
       <form
         style={{ display: "flex", flexDirection: "column" }}
@@ -19,7 +27,10 @@ function Login() {
       >
         <input type="text" placeholder="Name" name="username" />
         <input type="text" placeholder="Password" name="password" />
-        <button> Submit </button>{" "}
+        <Button variant="outlined" type="submit">
+          {" "}
+          Submit{" "}
+        </Button>
       </form>{" "}
     </div>
   );

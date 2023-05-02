@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Pet, { petOptions } from "./Pet";
 import Dropdown from "./Dropdown";
-
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Button from "@mui/material/Button";
+
+const Y_OFFSET = 20; //how much pet moves per click
+const Y_LOW = 500; //lowest y coordinate
+const Y_HIGH = 800; //highest y coordinate
+const Y_LOW_WO_DEVICE = 340; //lowest y coordinate without device
 
 function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
@@ -12,7 +18,8 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [session, setSession] = useState(false); // set if session has started
   const [currentTime, setCurrentTime] = useState(0); // internal clock
   const [sessionEndTime, setSessionEndTime] = useState(0);
-
+  const [usingDevice, setUsingDevice] = useState(true);
+  const [petYcoor, setPetYcoor] = useState(500);
   async function updateSessionData(_sessionStatus) {
     console.log("fetch");
     fetch("/updateSessionData", {
@@ -69,8 +76,9 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     setPet(petOptions[cur_idx].value);
   }
 
-  const displayPet = () => {
-    if (session) checkSessionStatus(); //check if the session has ended or not
+  //check if the session has ended or not
+  const handleSession = () => {
+    if (session) checkSessionStatus();
   };
 
   const startSession = () => {
@@ -91,13 +99,49 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     setOpenSB(true);
   };
 
+  //move the pets during session
+  const handleYCoorChange = (newY) => {
+    if (newY >= Y_LOW && newY <= Y_HIGH) {
+      setPetYcoor(newY);
+    } else {
+      // TODO: add error message
+    }
+  };
+
+  //buttons to move the pets
+  const renderButtons = () => {
+    if (usingDevice) {
+      return (
+        <div>
+          <Button onClick={() => handleYCoorChange(petYcoor + Y_OFFSET)}>
+            <AddCircleOutlineIcon />
+          </Button>
+          {/* <p>{petYcoor}</p> */}
+          <Button onClick={() => handleYCoorChange(petYcoor - Y_OFFSET)}>
+            <RemoveCircleIcon />
+          </Button>
+        </div>
+      );
+    }
+  };
+  //handle preference of using our device with cube or not. Adjust pet's y coordinate accordingly
+  const handleDeviceChange = () => {
+    setUsingDevice(!usingDevice);
+    if (usingDevice === true) {
+      //this is so buggy idk why but it works so i dont care
+      setPetYcoor(Y_LOW_WO_DEVICE);
+    } else {
+      setPetYcoor(Y_LOW);
+    }
+  };
+
   return (
     <div className="App">
       <div class="container">
-        {" "}
         {session === true ? (
           // start session
           <div class="container">
+            {renderButtons()}
             <p>
               Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
               {(sessionEndTime - currentTime) % 60}{" "}
@@ -105,7 +149,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
             <Button variant="outlined" onClick={() => stopSession()}>
               stop!
             </Button>
-            {displayPet()} <Pet petIdx={pet} />{" "}
+            {handleSession()} <Pet petIdx={pet} petYCoor={petYcoor} />{" "}
           </div>
         ) : (
           // end session
@@ -136,6 +180,15 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
               value={sessionPeriod}
               onChange={handleTimeChange}
             />{" "}
+            <div>
+              <label for="usingDevice"> Using device </label>{" "}
+              <input
+                type="checkbox"
+                checked={usingDevice}
+                onChange={() => handleDeviceChange()}
+                id="usingDevice"
+              />{" "}
+            </div>
             <Button variant="outlined" onClick={() => startSession()}>
               start!
             </Button>

@@ -42,9 +42,14 @@ export const petOptions = [
   },
 ];
 
-function Pet({ petIdx }) {
+function Pet({ petIdx, petYCoor }) {
   //TODO: fetch the evolution stage later
-  return <div> {petOptions[petIdx].evolutionWidgets[0]} </div>;
+  return (
+    <div style={{ position: "absolute", top: `${petYCoor}px` }}>
+      {" "}
+      {petOptions[petIdx].evolutionWidgets[0]}{" "}
+    </div>
+  );
 }
 
 export default Pet;
