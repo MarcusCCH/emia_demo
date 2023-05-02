@@ -2,7 +2,7 @@ import "./App.css";
 import Spline from "@splinetool/react-spline";
 import { useState } from "react";
 
-function Pig() {
+function Firebird() {
   const [evolutionStage, setEvolutionStage] = useState(0);
   const evolutionStageWidgets = [
     <Spline scene="https://prod.spline.design/VNGsgHmiPAzpvJU4/scene.splinecode" />,
@@ -27,4 +27,4 @@ function Pig() {
   );
 }
 
-export default Pig;
+export default Firebird;
