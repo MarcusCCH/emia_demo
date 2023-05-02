@@ -7,9 +7,10 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Button from "@mui/material/Button";
 
 const Y_OFFSET = 20; //how much pet moves per click
-const Y_LOW = 500; //lowest y coordinate
-const Y_HIGH = 800; //highest y coordinate
-const Y_LOW_WO_DEVICE = 340; //lowest y coordinate without device
+const Y_DEFAULT_W_DEVICE = 400; //default y coordinate
+const Y_DEFAULT_WO_DEVICE = 200; //lowest y coordinate without device
+const Y_LOW = 300; //lowest y coordinate (**distance from top)
+const Y_HIGH = 800; //highest y coordinate (**distance from top)
 
 function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
@@ -19,7 +20,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [currentTime, setCurrentTime] = useState(0); // internal clock
   const [sessionEndTime, setSessionEndTime] = useState(0);
   const [usingDevice, setUsingDevice] = useState(true);
-  const [petYcoor, setPetYcoor] = useState(500);
+  const [petYcoor, setPetYcoor] = useState(Y_DEFAULT_W_DEVICE);
   async function updateSessionData(_sessionStatus) {
     console.log("fetch");
     fetch("/updateSessionData", {
@@ -129,9 +130,9 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     setUsingDevice(!usingDevice);
     if (usingDevice === true) {
       //this is so buggy idk why but it works so i dont care
-      setPetYcoor(Y_LOW_WO_DEVICE);
+      setPetYcoor(Y_DEFAULT_WO_DEVICE);
     } else {
-      setPetYcoor(Y_LOW);
+      setPetYcoor(Y_DEFAULT_W_DEVICE);
     }
   };
 
