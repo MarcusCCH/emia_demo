@@ -1,3 +1,5 @@
+import Button from "@mui/material/Button";
+
 function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
   async function logout() {
     const res = await fetch("/logout", {
@@ -15,25 +17,25 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
   }
   const loginWidget = loginStatus ? (
     <>
-      <li class="links" onClick={() => setPageIdx(1)} style={{}}>
-        Info{" "}
+      <li class="links" onClick={() => setPageIdx(1)}>
+        <Button variant={pageIdx == 1 ? "contained" : "text"}> Info </Button>{" "}
       </li>{" "}
       <li class="links" onClick={() => logout()}>
-        Logout{" "}
+        <Button variant="text"> Logout </Button>{" "}
       </li>{" "}
     </>
   ) : (
     <li class="links" onClick={() => setPageIdx(2)}>
-      Login{" "}
+      <Button variant={pageIdx == 2 ? "contained" : "text"}> Login </Button>{" "}
     </li>
   );
 
   return (
     <ul class="navbar">
-      <li> 3 D study pet companion </li>{" "}
+      <li> STudyPet </li>{" "}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <li class="links" onClick={() => setPageIdx(0)}>
-          Home{" "}
+          <Button variant={pageIdx == 0 ? "contained" : "text"}> Home </Button>{" "}
         </li>{" "}
         {loginWidget}{" "}
       </div>{" "}

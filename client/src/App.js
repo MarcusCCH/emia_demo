@@ -9,7 +9,11 @@ function App() {
   const [pageIdx, setPageIdx] = useState(0);
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const pages = [<Home loginStatus={loginStatus} />, <Info />, <Login />];
+  const pages = [
+    <Home loginStatus={loginStatus} currentUser={currentUser} />,
+    <Info />,
+    <Login />,
+  ];
   async function fetchLoginStatus() {
     const resposne = await fetch("/loginStatus");
     const data = await resposne.json();
@@ -34,6 +38,7 @@ function App() {
   return (
     <div>
       <NavBar
+        pageIdx={pageIdx}
         setPageIdx={setPageIdx}
         loginStatus={loginStatus}
         setLoginStatus={setLoginStatus}
