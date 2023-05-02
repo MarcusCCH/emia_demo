@@ -32,7 +32,7 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
 
   return (
     <ul class="navbar">
-      <li> STudyPet </li>{" "}
+      <li> USTudyPet </li>{" "}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <li class="links" onClick={() => setPageIdx(0)}>
           <Button variant={pageIdx == 0 ? "contained" : "text"}> Home </Button>{" "}

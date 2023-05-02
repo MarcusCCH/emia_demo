@@ -4,20 +4,14 @@ import Pet, { petOptions } from "./Pet";
 import Dropdown from "./Dropdown";
 
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
-function Home({ loginStatus, currentUser }) {
+function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
   const [idx, setIdx] = useState(0); //for dropdown
   const [pet, setPet] = useState(0); //for passing between components
   const [session, setSession] = useState(false); // set if session has started
   const [currentTime, setCurrentTime] = useState(0); // internal clock
   const [sessionEndTime, setSessionEndTime] = useState(0);
-  //snackbar
-  const [openSB, setOpenSB] = useState(false);
-  const [SBMessage, setSBMessage] = useState("");
 
   async function updateSessionData(_sessionStatus) {
     console.log("fetch");
@@ -97,25 +91,6 @@ function Home({ loginStatus, currentUser }) {
     setOpenSB(true);
   };
 
-  const handleSBClose = () => {
-    // if (reason === "clickaway") {
-    //   return;
-    // }
-    setOpenSB(false);
-  };
-  const SBAction = (
-    <>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleSBClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
-
   return (
     <div className="App">
       <div class="container">
@@ -166,13 +141,6 @@ function Home({ loginStatus, currentUser }) {
             </Button>
           </div>
         )}{" "}
-        <Snackbar
-          open={openSB}
-          autoHideDuration={1500}
-          onClose={handleSBClose}
-          message={SBMessage}
-          action={SBAction}
-        />
       </div>{" "}
     </div>
   );

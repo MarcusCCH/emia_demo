@@ -5,12 +5,24 @@ import Info from "./Info";
 import Login from "./Login";
 import { useState, useEffect } from "react";
 
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+
 function App() {
   const [pageIdx, setPageIdx] = useState(0);
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  //snackbar
+  const [openSB, setOpenSB] = useState(false);
+  const [SBMessage, setSBMessage] = useState("");
   const pages = [
-    <Home loginStatus={loginStatus} currentUser={currentUser} />,
+    <Home
+      loginStatus={loginStatus}
+      currentUser={currentUser}
+      setOpenSB={setOpenSB}
+      setSBMessage={setSBMessage}
+    />,
     <Info />,
     <Login />,
   ];
@@ -20,21 +32,28 @@ function App() {
     if (data.loggedIn) {
       setLoginStatus(true);
       setCurrentUser(data.username);
+      setSBMessage("Welcome back, " + data.username + "!");
+      setOpenSB(true);
     } else {
       setLoginStatus(false);
     }
   }
   useEffect(() => {
     fetchLoginStatus();
-  });
-  const welcomeWidget = loginStatus ? (
-    <div>
-      <p style={{ textAlign: "center" }}> Welcome back!{currentUser} </p>{" "}
-    </div>
-  ) : (
-    <> </>
-  );
+  }, []);
 
+  const SBAction = (
+    <>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={() => setOpenSB(false)}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
   return (
     <div>
       <NavBar
@@ -43,7 +62,14 @@ function App() {
         loginStatus={loginStatus}
         setLoginStatus={setLoginStatus}
       />{" "}
-      {welcomeWidget} {pages[pageIdx]}{" "}
+      {pages[pageIdx]}{" "}
+      <Snackbar
+        open={openSB}
+        autoHideDuration={1500}
+        onClose={() => setOpenSB(false)}
+        message={SBMessage}
+        action={SBAction}
+      />
     </div>
   );
 }
