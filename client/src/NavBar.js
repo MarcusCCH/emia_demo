@@ -1,4 +1,4 @@
-function NavBar({ setPageIdx, loginStatus, setLoginStatus }) {
+function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
   async function logout() {
     const res = await fetch("/logout", {
       method: "POST",
@@ -15,12 +15,12 @@ function NavBar({ setPageIdx, loginStatus, setLoginStatus }) {
   }
   const loginWidget = loginStatus ? (
     <>
-      <li class="links" onClick={() => setPageIdx(1)}>
-        Info
-      </li>
+      <li class="links" onClick={() => setPageIdx(1)} style={{}}>
+        Info{" "}
+      </li>{" "}
       <li class="links" onClick={() => logout()}>
         Logout{" "}
-      </li>
+      </li>{" "}
     </>
   ) : (
     <li class="links" onClick={() => setPageIdx(2)}>
@@ -30,7 +30,7 @@ function NavBar({ setPageIdx, loginStatus, setLoginStatus }) {
 
   return (
     <ul class="navbar">
-      <li> 3D study pet companion </li>{" "}
+      <li> 3 D study pet companion </li>{" "}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <li class="links" onClick={() => setPageIdx(0)}>
           Home{" "}

@@ -1,26 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { petWidgets, petOptions } from "./Pet";
-
-const Dropdown = ({ label, value, options, onChange }) => {
-  return (
-    <label>
-      {" "}
-      {label}{" "}
-      <select value={value} onChange={onChange}>
-        {" "}
-        {options.map((option) => (
-          <option value={option.value}> {option.label} </option>
-        ))}{" "}
-      </select>{" "}
-    </label>
-  );
-};
+import Pet, { petOptions } from "./Pet";
+import Dropdown from "./Dropdown";
 
 function Home({ loginStatus }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
-  const [idx, setIdx] = useState(0);
-  const [pet, setPet] = useState(0);
+  const [idx, setIdx] = useState(0); //for dropdown
+  const [pet, setPet] = useState(0); //for passing between components
   const [session, setSession] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [sessionEndTime, setSessionEndTime] = useState(0);
@@ -82,7 +68,6 @@ function Home({ loginStatus }) {
 
   const displayPet = () => {
     if (session) checkSessionStatus(); //check if the session has ended or not
-    return petWidgets[pet];
   };
 
   const startSession = () => {
@@ -110,11 +95,8 @@ function Home({ loginStatus }) {
               Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
               {(sessionEndTime - currentTime) % 60}{" "}
             </p>{" "}
-            <p>
-              sessionEndTime: {sessionEndTime}; currentTime: {currentTime}
-            </p>
             <button onClick={() => stopSession()}> stop! </button>{" "}
-            {displayPet()}{" "}
+            {displayPet()} <Pet petIdx={pet} />{" "}
           </div>
         ) : (
           // end session
