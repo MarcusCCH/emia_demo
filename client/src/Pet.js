@@ -1,16 +1,21 @@
 import Pig from "./Pig";
 import Hamster from "./Hamster";
-import Cat from "./cat/Cat";
+import FireBird from "./FireBird";
 import Spline from "@splinetool/react-spline";
-export const petWidgets = [<Cat />, <Pig />, <Hamster />];
+import { useState, useRef } from "react";
+// import { Stats, OrbitControls, Circle } from "@react-three/drei";
+import { Canvas, useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+export const petWidgets = [<FireBird />, <Pig />, <Hamster />];
 export const petOptions = [
   {
-    label: "cat",
+    label: "fire bird",
     value: 0,
     icon: (
-      <Spline scene="https://draft.spline.design/p6F3m-93MDr228La/scene.splinecode" />
+      <Spline scene="https://prod.spline.design/VNGsgHmiPAzpvJU4/scene.splinecode" />
     ),
-    image: <img src="/cat.jpeg" alt="cat" />,
+    image: <img src="/fire_bird.png" alt="fire_bird" />,
   },
 
   {
@@ -25,7 +30,13 @@ export const petOptions = [
   {
     label: "hamster",
     value: 2,
-    icon: <p> Hamster icon </p>,
+    icon: (
+      <img
+        src="/hamster.jpeg"
+        alt="hamster"
+        style={{ width: "100px", height: "100px" }}
+      />
+    ),
     image: <img src="/hamster.jpeg" alt="hamster" />,
   },
 ];

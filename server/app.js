@@ -37,15 +37,17 @@ mongoose
   .then(() => {
     console.log("connected");
     // Pet.updateMany(
-    //   {},
-    //   { $set: { totalFocusSession: 10 } },
+    //   { type: "cat" },
+    //   { $set: { type: "chicken" } },
     //   { multi: true, upsert: true }
-    // );
+    // ).then(() => {
+    //   console.log("updated type of cats to chicken");
+    // });
     // console.log("finished");
   });
 
 /*create default pets*/
-const petList = ["cat", "pig", "hamster"];
+const petList = ["chicken", "pig", "hamster"];
 async function createPet(pet) {
   const createdPet = await Pet.create({
     type: pet,
