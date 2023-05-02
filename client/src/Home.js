@@ -6,11 +6,12 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Button from "@mui/material/Button";
 
+//y coordinate data for the pet during session
 const Y_OFFSET = 20; //how much pet moves per click
 const Y_DEFAULT_W_DEVICE = 400; //default y coordinate
 const Y_DEFAULT_WO_DEVICE = 200; //lowest y coordinate without device
 const Y_LOW = 300; //lowest y coordinate (**distance from top)
-const Y_HIGH = 800; //highest y coordinate (**distance from top)
+const Y_HIGH = 500; //highest y coordinate (**distance from top)
 
 function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
@@ -106,6 +107,8 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
       setPetYcoor(newY);
     } else {
       // TODO: add error message
+      setSBMessage("Pet cannot go any further!");
+      setOpenSB(true);
     }
   };
 

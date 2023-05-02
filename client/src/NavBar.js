@@ -32,7 +32,15 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
 
   return (
     <ul class="navbar">
-      <li> USTudyPet </li>{" "}
+      <li>
+        {" "}
+        <img
+          src="/fire_bird.png"
+          alt="fire_bird"
+          style={{ width: "30px", height: "30px" }}
+        />{" "}
+        USTudyPet{" "}
+      </li>{" "}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <li class="links" onClick={() => setPageIdx(0)}>
           <Button variant={pageIdx == 0 ? "contained" : "text"}> Home </Button>{" "}
