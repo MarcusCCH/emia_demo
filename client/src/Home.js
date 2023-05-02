@@ -88,6 +88,11 @@ function Home({ loginStatus }) {
   const startSession = () => {
     setSession(true);
     setSessionEndTime(currentTime + sessionPeriod * 60);
+    console.log(
+      `end time: ${
+        currentTime + sessionPeriod * 60
+      }, start-time: ${currentTime}`
+    );
   };
   const stopSession = () => {
     updateSessionData(false);
@@ -105,6 +110,9 @@ function Home({ loginStatus }) {
               Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
               {(sessionEndTime - currentTime) % 60}{" "}
             </p>{" "}
+            <p>
+              sessionEndTime: {sessionEndTime}; currentTime: {currentTime}
+            </p>
             <button onClick={() => stopSession()}> stop! </button>{" "}
             {displayPet()}{" "}
           </div>
@@ -137,11 +145,6 @@ function Home({ loginStatus }) {
               value={sessionPeriod}
               onChange={handleTimeChange}
             />{" "}
-            <p>
-              {" "}
-              Current session: {sessionPeriod}
-              minutes{" "}
-            </p>{" "}
             <button onClick={() => startSession()}> start! </button>{" "}
           </div>
         )}{" "}

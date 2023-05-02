@@ -2,10 +2,6 @@ import Pig from "./Pig";
 import Hamster from "./Hamster";
 import FireBird from "./cat/Cat";
 import Spline from "@splinetool/react-spline";
-import { useState, useRef } from "react";
-// import { Stats, OrbitControls, Circle } from "@react-three/drei";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export const petWidgets = [<FireBird />, <Pig />, <Hamster />];
 export const petOptions = [
