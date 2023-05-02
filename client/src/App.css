@@ -1,12 +1,8 @@
-/* .App {
-  text-align: center;
-} */
-
 .container {
     display: flex;
-    /* justify-content: center; */
+    flex-flow: column wrap;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
     width: 100vw;
     height: 100vh;
 }
@@ -15,8 +11,7 @@
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
 }
 
 .pet-card {
@@ -45,7 +40,7 @@
     background-color: #282c34;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-flow: column wrap;
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
@@ -64,47 +59,63 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
 }
 
-
-/* ------------------------------------start of navbar-------------------------------- */
-
 ul.navbar {
     list-style-type: none;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-between;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding: 0 5%;
     position: sticky;
 }
 
 ul.navbar li {
     display: block;
     margin: 10px;
-}
-
-ul.navbar li.icon {
-    align-self: flex-start;
-}
-
-ul.navbar li.links {
-    align-self: flex-end;
-}
-
-ul.navbar li {
     text-decoration: none;
     transition: 1s ease;
 }
 
-ul.navbar li.links:hover {
+ul.navbar li:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
+/* ----------- Phone view ----------- */
+@media only screen and (max-width: 480px) {
+    .container {
+        height: auto;
+    }
 
-/* ------------------------------------end of navbar-------------------------------- */
+    .container-horizontal {
+        flex-direction: column;
+    }
+
+    .pet-card img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .App-logo {
+        height: 20vmin;
+    }
+
+    .App-header {
+        font-size: calc(8px + 2vmin);
+    }
+
+    ul.navbar {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    ul.navbar li {
+        margin: 5px;
+    }
+}

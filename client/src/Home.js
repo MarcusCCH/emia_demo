@@ -5,52 +5,51 @@ import { petWidgets, petOptions } from "./Pet";
 const Dropdown = ({ label, value, options, onChange }) => {
   return (
     <label>
-      {" "}
-      {label}{" "}
+      {label}
       <select value={value} onChange={onChange}>
-        {" "}
         {options.map((option) => (
-          <option value={option.value}> {option.label} </option>
-        ))}{" "}
-      </select>{" "}
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 };
 
 function Home({ loginStatus }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
-  const [idx, setIdx] = useState(0);
-  const [pet, setPet] = useState(0);
-  const [session, setSession] = useState(false);
+  const [petIndex, setPetIndex] = useState(0);
+  const [petValue, setPetValue] = useState(petOptions[0].value);
+  const [isSessionActive, setIsSessionActive] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [sessionEndTime, setSessionEndTime] = useState(0);
-  async function updateSessionData(_sessionStatus) {
+
+  const updateSessionData = async (sessionStatus) => {
     console.log("fetch");
-    fetch("/updateSessionData", {
+    await fetch("/updateSessionData", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionStatus: _sessionStatus,
-        sessionPeriod: sessionPeriod,
-        petIdx: pet,
+        sessionStatus,
+        sessionPeriod,
+        petIdx: petValue,
       }),
     });
-  }
+  };
 
   const checkSessionStatus = () => {
-    if (sessionEndTime < currentTime && session) {
+    if (sessionEndTime < currentTime && isSessionActive) {
       if (loginStatus) {
         updateSessionData(true);
       }
-
-      setSession(false);
+      setIsSessionActive(false);
     }
   };
 
-  //internal clock
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime((currentTime) => currentTime + 1);
@@ -60,9 +59,7 @@ function Home({ loginStatus }) {
 
   const timeOptions = [
     { label: "15 minutes", value: 15 },
-
     { label: "30 minutes", value: 30 },
-
     { label: "45 minutes", value: 45 },
   ];
 
@@ -70,83 +67,79 @@ function Home({ loginStatus }) {
     setSessionPeriod(event.target.value);
   };
 
-  function handlePetChange(sign) {
-    var cur_idx = idx;
-    if (cur_idx == 0 && sign === -1) cur_idx = petOptions.length - 1;
-    else {
-      cur_idx = (cur_idx + 1 * sign) % petOptions.length;
-    }
-    setIdx(cur_idx);
-    setPet(petOptions[cur_idx].value);
-  }
+  const handlePetChange = (direction) => {
+    const newIndex =
+      (petIndex + direction + petOptions.length) % petOptions.length;
+    setPetIndex(newIndex);
+    setPetValue(petOptions[newIndex].value);
+  };
 
   const displayPet = () => {
-    if (session) checkSessionStatus(); //check if the session has ended or not
-    return petWidgets[pet];
+    if (isSessionActive) checkSessionStatus();
+    return petWidgets[petValue];
   };
 
   const startSession = () => {
-    setSession(true);
+    setIsSessionActive(true);
     setSessionEndTime(currentTime + sessionPeriod);
   };
+
   const stopSession = () => {
     updateSessionData(false);
-    setSession(false);
+    setIsSessionActive(false);
   };
 
   return (
     <div className="App">
-      <div class="container">
-        {" "}
-        {session === true ? (
-          // start session
-          <div class="container">
+      <main className="container">
+        {isSessionActive ? (
+          // Active session
+          <section className="container">
             <p>
-              Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
-              {(sessionEndTime - currentTime) % 60}{" "}
-            </p>{" "}
-            <button onClick={() => stopSession()}> stop! </button>{" "}
-            {displayPet()}{" "}
-          </div>
+              Time left:{" "}
+              {`${Math.floor((sessionEndTime - currentTime) / 60)}:${(
+                sessionEndTime - currentTime
+              ) % 60}`}
+            </p>
+            <button onClick={stopSession}>Stop!</button>
+            {displayPet()}
+          </section>
         ) : (
-          // end session
-          <div class="container">
-            <h3> Choose your pet </h3>{" "}
-            <div class="viewer"> {petOptions[pet].icon} </div>{" "}
+          // Inactive session
+          <section className="container">
+            <header>
+              <h3>Choose your pet</h3>
+            </header>
+            <div className="viewer">{petOptions[petIndex].icon}</div>
             <div>
               <FaAngleLeft
                 onClick={() => handlePetChange(-1)}
-                style={{
-                  display: "inline-block",
-                  marginRight: "10px",
-                }}
-              />{" "}
+                style={{ display: "inline-block", marginRight: "10px" }}
+              />
               <p style={{ display: "inline-block" }}>
-                {" "}
-                {petOptions[pet].label}{" "}
-              </p>{" "}
+                {petOptions[petIndex].label}
+              </p>
               <FaAngleRight
-                onClick={() => handlePetChange(+1)}
+                onClick={() => handlePetChange(1)}
                 style={{ display: "inline-block", marginLeft: "10px" }}
-              />{" "}
-            </div>{" "}
-            <h3> Choose your time: </h3>{" "}
+              />
+            </div>
+            <header>
+              <h3>Choose your time:</h3>
+            </header>
             <Dropdown
               label="Time session: "
               options={timeOptions}
               value={sessionPeriod}
               onChange={handleTimeChange}
-            />{" "}
-            <p>
-              {" "}
-              Current session: {sessionPeriod}
-              minutes{" "}
-            </p>{" "}
-            <button onClick={() => startSession()}> start! </button>{" "}
-          </div>
-        )}{" "}
-      </div>{" "}
+            />
+            <p>Current session: {sessionPeriod} minutes</p>
+            <button onClick={startSession}>Start!</button>
+          </section>
+        )}
+      </main>
     </div>
   );
 }
+
 export default Home;
