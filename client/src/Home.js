@@ -45,8 +45,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     if (sessionEndTime < currentTime && session) {
       if (loginStatus) {
         updateSessionData(true);
-        resetSession();
       }
+      setSBMessage(`Session ended! You have earned ${sessionPeriod} points!`);
+      setOpenSB(true);
+      resetSession();
 
       setSession(false);
     }
@@ -123,10 +125,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
         <div>
           <Button onClick={() => handleYCoorChange(petYcoor + Y_OFFSET)}>
             <AddCircleOutlineIcon />
-          </Button>
+          </Button>{" "}
           <Button onClick={() => handleYCoorChange(petYcoor - Y_OFFSET)}>
             <RemoveCircleIcon />
-          </Button>
+          </Button>{" "}
         </div>
       );
     }
@@ -145,18 +147,21 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   return (
     <div className="App">
       <div class="container">
+        {" "}
         {session === true ? (
           // start session
           <div class="container">
-            {renderButtons()}
+            {" "}
+            {renderButtons()}{" "}
             <p>
               Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
               {(sessionEndTime - currentTime) % 60}{" "}
             </p>{" "}
             <Button variant="outlined" onClick={() => stopSession()}>
               stop!
-            </Button>
-            {handleSession()} <Pet petIdx={pet} petYCoor={petYcoor} />{" "}
+            </Button>{" "}
+            {handleSession()}{" "}
+            <Pet petIdx={pet} petYCoor={petYcoor} loginStatus={loginStatus} />{" "}
           </div>
         ) : (
           // end session
@@ -195,10 +200,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
                 onChange={() => handleDeviceChange()}
                 id="usingDevice"
               />{" "}
-            </div>
+            </div>{" "}
             <Button variant="outlined" onClick={() => startSession()}>
               start!
-            </Button>
+            </Button>{" "}
           </div>
         )}{" "}
       </div>{" "}

@@ -14,18 +14,6 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-function renderLeftButton({ petIdx, setPetIdx }) {
-  if (petIdx < petOptions.length) {
-    return (
-      <div>
-        <Button>
-          <KeyboardArrowLeftIcon onClick={() => setPetIdx(petOptions.length)} />
-        </Button>
-      </div>
-    );
-  }
-}
-
 function Info() {
   const [userInfo, setUserInfo] = useState(null);
   const [petInfo, setPetInfo] = useState([]);
@@ -61,11 +49,11 @@ function Info() {
     <Card sx={{ width: 250 }}>
       <CardMedia sx={{ height: 150 }} image={pet.image} />
       <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {petOptions[index].label}
+        </Typography>
         {petInfo[index] ? (
           <>
-            <Typography gutterBottom variant="h5" component="div">
-              {petInfo[index].type}
-            </Typography>
             <p>Level {petInfo[index].evolutionStage + 1}</p>
             <BorderLinearProgress
               variant="determinate"
@@ -78,7 +66,6 @@ function Info() {
           </>
         ) : (
           <>
-            <h2> loading {petOptions[index].label} </h2>
             <Skeleton variant="rectangular" width={250} height={50} />
           </>
         )}

@@ -1,4 +1,5 @@
 import Spline from "@splinetool/react-spline";
+import { useEffect, useState } from "react";
 export const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 export const petOptions = [
   {
@@ -48,12 +49,29 @@ export const petOptions = [
   },
 ];
 
-function Pet({ petIdx, petYCoor }) {
-  //TODO: fetch the evolution stage later
+function Pet({ petIdx, petYCoor, loginStatus }) {
+  const [evolutionStage, setEvolutionStage] = useState(0);
+  async function fetchEvolutionStage() {
+    const res = await fetch(`/getEvolutionStage/${petIdx}`);
+    const data = await res.json();
+    console.log(petOptions[petIdx].label, ":", data.evolutionStage);
+    setEvolutionStage(
+      Math.min(
+        data.evolutionStage,
+        petOptions[petIdx].evolutionWidgets.length - 1
+      )
+    );
+  }
+  useEffect(() => {
+    if (loginStatus) fetchEvolutionStage();
+    else {
+      setEvolutionStage(0);
+    }
+  }, []);
+
   return (
     <div style={{ position: "absolute", top: `${petYCoor}px` }}>
-      {" "}
-      {petOptions[petIdx].evolutionWidgets[0]}{" "}
+      {petOptions[petIdx].evolutionWidgets[evolutionStage]}
     </div>
   );
 }

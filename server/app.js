@@ -37,17 +37,17 @@ mongoose
   .then(() => {
     console.log("connected");
     // Pet.updateMany(
-    //   { type: "cat" },
-    //   { $set: { type: "chicken" } },
+    //   { type: "chicken" },
+    //   { $set: { type: "fire bird" } },
     //   { multi: true, upsert: true }
     // ).then(() => {
-    //   console.log("updated type of cats to chicken");
+    //   console.log("updated type of cats to fire bird");
     // });
     // console.log("finished");
   });
 
 /*create default pets*/
-const petList = ["chicken", "pig", "hamster"];
+const petList = ["fire bird", "pig", "hamster"];
 async function createPet(pet) {
   const createdPet = await Pet.create({
     type: pet,
@@ -201,16 +201,31 @@ app.get("/info/:petIdx", isLoggedIn, async (req, res) => {
     user: req.user._id,
     type: petList[req.params.petIdx],
   });
-  console.log(foundPet);
+  // console.log(foundPet);
   res.json(foundPet);
 });
+
+app.get("/getEvolutionStage/:petIdx", isLoggedIn, async (req, res) => {
+  const foundPet = await Pet.findOne({
+    user: req.user._id,
+    type: petList[req.params.petIdx],
+  });
+  console.log(foundPet);
+  res.json({ evolutionStage: foundPet.evolutionStage });
+});
+
 //update session data
 const timeOptions = [15, 30, 45]; //just for reference
-const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
+const evolutionStagesXp = [100, 500]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 
 const checkEvolutionStage = async (pet) => {
   let updatedPet = pet;
-  if (pet.totalSuccessFulSession > evolutionStagesXp[pet.evolutionStage]) {
+  console.log("@checkEvolutionStage function");
+  console.log(
+    pet.totalSuccessfulSession,
+    evolutionStagesXp[pet.evolutionStage]
+  );
+  if (pet.totalSuccessfulSession > evolutionStagesXp[pet.evolutionStage]) {
     updatedPet = await Pet.findOneAndUpdate(
       { _id: pet._id },
       { $inc: { evolutionStage: 1 } }
@@ -223,25 +238,25 @@ const checkEvolutionStage = async (pet) => {
 const updateHistogram = async (pet, sessionPeriod) => {
   let currentPet = pet;
   ++currentPet.histogram[sessionPeriod / 15 - 1];
-  console.log(
-    `@updatehistogram function, current pet's histogram: ${
-      currentPet.histogram[sessionPeriod / 15 - 1]
-    }`
-  );
+  // console.log(
+  //   `@updatehistogram function, current pet's histogram: ${
+  //     currentPet.histogram[sessionPeriod / 15 - 1]
+  //   }`
+  // );
   let updatedPet = await Pet.findByIdAndUpdate(
     { _id: pet._id },
     { histogram: currentPet.histogram }
   );
-  console.log(`updated histogram of pet: ${updatedPet}`);
+  // console.log(`updated histogram of pet: ${updatedPet}`);
 };
 app.post("/updateSessionData", isLoggedIn, async (req, res) => {
   console.log("@ updateSessionData route");
   const { sessionStatus, sessionPeriod, petIdx } = req.body;
-  console.log(sessionPeriod);
+  // console.log(sessionPeriod);
   let pet;
   if (sessionStatus == true) {
     //increment success sessions
-    console.log("increment success sessions");
+    // console.log("increment success sessions");
     pet = await Pet.findOneAndUpdate(
       { user: req.user._id, type: petList[petIdx] },
       {
@@ -252,9 +267,11 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
       }
     );
     updateHistogram(pet, sessionPeriod);
+    checkEvolutionStage(pet);
+    console.log(pet);
   } else {
     //increment failed sessions
-    console.log("increment failed sessions");
+    // console.log("increment failed sessions");
     pet = await Pet.findOneAndUpdate(
       { user: req.user._id, type: petList[petIdx] },
       {
@@ -265,8 +282,6 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
       }
     );
   }
-  checkEvolutionStage(pet);
-  console.log(pet);
 });
 /* --------- hosting --------*/
 app.get("*", (req, res) => {
