@@ -1,3 +1,5 @@
+import BorderLinearProgress from "./ProgressBar";
+import { petOptions, evolutionStagesXp } from "./Pet";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,8 +20,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-//pie chart for basic info
 
 //histograms
 const histogramOptions = {
@@ -59,6 +59,17 @@ function PetInfo({ pet }) {
   return (
     <div>
       <h1> {pet.type} </h1>
+      <h3>Level {pet.evolutionStage + 1}</h3>
+      <p>
+        {pet.totalSuccessfulSession} / {evolutionStagesXp[pet.evolutionStage]}
+      </p>
+      <BorderLinearProgress
+        variant="determinate"
+        value={
+          (pet.totalSuccessfulSession / evolutionStagesXp[pet.evolutionStage]) *
+          100
+        }
+      />
       {pet.totalFocusSession ? (
         <Pie data={basicData} />
       ) : (

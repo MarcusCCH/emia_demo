@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { petOptions, evolutionStagesXp } from "./Pet";
 import PetInfo from "./PetInfo";
+import BorderLinearProgress from "./ProgressBar";
 
 //mui
 import Skeleton from "@mui/material/Skeleton";
@@ -12,8 +13,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-
-import BorderLinearProgress from "./ProgressBar";
 
 function renderLeftButton({ petIdx, setPetIdx }) {
   if (petIdx < petOptions.length) {
