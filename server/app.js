@@ -36,12 +36,13 @@ mongoose
   )
   .then(() => {
     console.log("connected");
-    // Pet.updateMany(
-    //   { type: "chicken" },
-    //   { $set: { type: "fire bird" } },
-    //   { multi: true, upsert: true }
-    // ).then(() => {
-    //   console.log("updated type of cats to fire bird");
+    // Pet.updateMany({}, {
+    //     $set: {
+    //         "histogram.$.successSession": 0,
+    //         "histogram.$.failedSession": 0,
+    //     },
+    // }, { multi: true, upsert: true }).then(() => {
+    //     console.log("updated histogram");
     // });
     // console.log("finished");
   });

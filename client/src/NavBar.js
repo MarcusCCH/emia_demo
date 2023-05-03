@@ -25,7 +25,7 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
       </li>{" "}
     </>
   ) : (
-    <li class="links" onClick={() => setPageIdx(2)}>
+    <li class="links" onClick={() => setPageIdx(2)} className="login">
       <Button variant={pageIdx == 2 ? "contained" : "text"}> Login </Button>{" "}
     </li>
   );

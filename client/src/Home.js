@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+
 import Pet, { petOptions } from "./Pet";
 import Dropdown from "./Dropdown";
+
+//mui
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Button from "@mui/material/Button";
@@ -22,6 +25,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionEndTime, setSessionEndTime] = useState(0);
   const [usingDevice, setUsingDevice] = useState(true);
   const [petYcoor, setPetYcoor] = useState(Y_DEFAULT_W_DEVICE);
+
   async function updateSessionData(_sessionStatus) {
     console.log("fetch");
     fetch("/updateSessionData", {
@@ -37,10 +41,12 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
       }),
     });
   }
+
   const resetSession = () => {
     setPetYcoor(Y_DEFAULT_W_DEVICE);
     setUsingDevice(true);
   };
+
   const checkSessionStatus = () => {
     if (sessionEndTime < currentTime && session) {
       if (loginStatus) {
@@ -165,7 +171,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           </div>
         ) : (
           // end session
-          <div class="container">
+          <div class="container home">
             <h3> Choose your pet </h3>{" "}
             <div class="viewer"> {petOptions[pet].icon} </div>{" "}
             <div>
@@ -183,15 +189,20 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
               <FaAngleRight
                 onClick={() => handlePetChange(+1)}
                 style={{ display: "inline-block", marginLeft: "10px" }}
+                className="changePet"
               />{" "}
             </div>{" "}
             <h3> Choose your focus period: </h3>{" "}
+            <div className="changeTime">
+
             <Dropdown
               label="Time session: "
               options={timeOptions}
               value={sessionPeriod}
               onChange={handleTimeChange}
+              
             />{" "}
+            </div>
             <div>
               <label for="usingDevice"> Using device </label>{" "}
               <input
@@ -199,9 +210,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
                 checked={usingDevice}
                 onChange={() => handleDeviceChange()}
                 id="usingDevice"
+                className="changeDevicePreference"
               />{" "}
             </div>{" "}
-            <Button variant="outlined" onClick={() => startSession()}>
+            <Button variant="outlined" onClick={() => startSession()} className="startSessionButton">
               start!
             </Button>{" "}
           </div>
