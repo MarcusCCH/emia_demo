@@ -36,13 +36,19 @@ mongoose
   )
   .then(() => {
     console.log("connected");
-    // Pet.updateMany({}, {
+    // Pet.updateMany(
+    //   {},
+    //   {
     //     $set: {
-    //         "histogram.$.successSession": 0,
-    //         "histogram.$.failedSession": 0,
+    //       "histogram.$[]": {
+    //         successSession: 0,
+    //         failedSession: 0,
+    //       },
     //     },
-    // }, { multi: true, upsert: true }).then(() => {
-    //     console.log("updated histogram");
+    //   },
+    //   { multi: true, upsert: true }
+    // ).then(() => {
+    //   console.log("updated histogram");
     // });
     // console.log("finished");
   });
@@ -236,11 +242,15 @@ const checkEvolutionStage = async (pet) => {
     console.log("pet not evolved");
   }
 };
-const updateHistogram = async (pet, sessionPeriod) => {
+const updateHistogram = async (pet, sessionPeriod, success) => {
   let currentPet = pet;
-  ++currentPet.histogram[sessionPeriod / 15 - 1];
+  if (success) {
+    ++currentPet.histogram[sessionPeriod / 15 - 1].successSession;
+  } else {
+    ++currentPet.histogram[sessionPeriod / 15 - 1].failedSession;
+  }
   // console.log(
-  //   `@updatehistogram function, current pet's histogram: ${
+  //   `@updatehistogram functi0on, current pet's histogram: ${
   //     currentPet.histogram[sessionPeriod / 15 - 1]
   //   }`
   // );
@@ -267,7 +277,7 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
         },
       }
     );
-    updateHistogram(pet, sessionPeriod);
+    updateHistogram(pet, sessionPeriod, true);
     checkEvolutionStage(pet);
     console.log(pet);
   } else {
@@ -282,6 +292,7 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
         },
       }
     );
+    updateHistogram(pet, sessionPeriod, false);
   }
 });
 /* --------- hosting --------*/

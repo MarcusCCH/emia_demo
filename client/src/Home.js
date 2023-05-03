@@ -97,7 +97,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
 
   const startSession = () => {
     setSession(true);
-    setSessionEndTime(currentTime + sessionPeriod * 60);
+    setSessionEndTime(currentTime + sessionPeriod);
     setSBMessage("Session started!");
     setOpenSB(true);
     console.log(
@@ -194,14 +194,12 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
             </div>{" "}
             <h3> Choose your focus period: </h3>{" "}
             <div className="changeTime">
-
-            <Dropdown
-              label="Time session: "
-              options={timeOptions}
-              value={sessionPeriod}
-              onChange={handleTimeChange}
-              
-            />{" "}
+              <Dropdown
+                label="Time session: "
+                options={timeOptions}
+                value={sessionPeriod}
+                onChange={handleTimeChange}
+              />{" "}
             </div>
             <div>
               <label for="usingDevice"> Using device </label>{" "}
@@ -213,7 +211,11 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
                 className="changeDevicePreference"
               />{" "}
             </div>{" "}
-            <Button variant="outlined" onClick={() => startSession()} className="startSessionButton">
+            <Button
+              variant="outlined"
+              onClick={() => startSession()}
+              className="startSessionButton"
+            >
               start!
             </Button>{" "}
           </div>

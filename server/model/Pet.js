@@ -25,7 +25,11 @@ const petSchema = new mongoose.Schema({
   //distribution among 15 minutes, 30 minutes, 45 minutes
   histogram: {
     type: [{ successSession: Number, failedSession: Number }],
-    default: [0, 0, 0],
+    default: [
+      { successSession: 0, failedSession: 0 },
+      { successSession: 0, failedSession: 0 },
+      { successSession: 0, failedSession: 0 },
+    ],
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
