@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { petOptions } from "./Pet";
+import { petOptions, evolutionStagesXp } from "./Pet";
 import Skeleton from "@mui/material/Skeleton";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -7,6 +7,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+
+import BorderLinearProgress from "./ProgressBar";
 
 function Info() {
   const [userInfo, setUserInfo] = useState(null);
@@ -62,31 +64,28 @@ function Info() {
       <div class="container-horizontal">
         {" "}
         {petOptions.map((pet, index) => (
-          <Card sx={{ maxWidth: 345 }}>
-            <CardMedia sx={{ height: 160 }} image={pet.image} />
+          <Card sx={{ width: 250 }}>
+            <CardMedia sx={{ height: 150 }} image={pet.image} />
             <CardContent>
               {petInfo[index] ? (
                 <>
                   <Typography gutterBottom variant="h5" component="div">
                     {petInfo[index].type}
                   </Typography>
-                  <p>
-                    successful session: {petInfo[index].totalSuccessfulSession}
-                  </p>
-                  <p>
-                    success rate:{" "}
-                    {(
+                  <p>Level {petInfo[index].evolutionStage + 1}</p>
+                  <BorderLinearProgress
+                    variant="determinate"
+                    value={
                       (petInfo[index].totalSuccessfulSession /
-                        petInfo[index].totalFocusSession) *
+                        evolutionStagesXp[petInfo[index].evolutionStage]) *
                       100
-                    ).toFixed()}{" "}
-                    %
-                  </p>{" "}
+                    }
+                  />
                 </>
               ) : (
                 <>
                   <h2> loading {petOptions[index].label} </h2>
-                  <Skeleton variant="rectangular" width={210} height={118} />
+                  <Skeleton variant="rectangular" width={250} height={50} />
                 </>
               )}
 

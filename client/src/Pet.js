@@ -1,5 +1,5 @@
 import Spline from "@splinetool/react-spline";
-
+export const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 export const petOptions = [
   {
     label: "fire bird",
