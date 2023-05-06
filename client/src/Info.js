@@ -59,8 +59,11 @@ function Info() {
     var pet_info = [];
 
     pet_info[0] = fire_bird;
+    pet_info[0].loaded = true;
     pet_info[1] = pig;
+    pet_info[1].loaded = true;
     pet_info[2] = hamster;
+    pet_info[2].loaded = true;
 
     setPetInfo(pet_info);
   };
@@ -81,7 +84,7 @@ function Info() {
         <Typography gutterBottom variant="h5" component="div">
           {pet.type}
         </Typography>
-        <p>Level {pet.evolutionStage + 1}</p>
+        {/* <p>Level {pet.evolutionStage + 1}</p>
         <BorderLinearProgress
           variant="determinate"
           value={
@@ -89,8 +92,9 @@ function Info() {
               evolutionStagesXp[pet.evolutionStage]) *
             100
           }
-        />
-        {/* {pet.loaded ? (
+        /> */}
+        {/* <p>{pet.loaded ? "loaded" : "not loaded"} </p> */}
+        {pet.loaded ? (
           <>
             <p>Level {pet.evolutionStage + 1}</p>
             <BorderLinearProgress
@@ -106,7 +110,7 @@ function Info() {
           <>
             <Skeleton variant="rectangular" width={250} height={50} />
           </>
-        )} */}
+        )}
 
         <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>
