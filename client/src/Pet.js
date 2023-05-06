@@ -1,5 +1,5 @@
-import Spline from "@splinetool/react-spline";
 import { useEffect, useState } from "react";
+import Spline from "@splinetool/react-spline";
 export const evolutionStagesXp = [100, 200, 1000, 2000]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 export const petOptions = [
   {

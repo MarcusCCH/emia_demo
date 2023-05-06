@@ -70,7 +70,10 @@
 }
 
 .viewer {
+    display: flex;
     width: 100vw;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes App-logo-spin {

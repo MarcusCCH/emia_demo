@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, CSSProperties } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 import Pet, { petOptions } from "./Pet";
 import Dropdown from "./Dropdown";
@@ -16,6 +17,12 @@ const Y_DEFAULT_WO_DEVICE = 200; //lowest y coordinate without device
 const Y_LOW = 300; //lowest y coordinate (**distance from top)
 const Y_HIGH = 500; //highest y coordinate (**distance from top)
 
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
+
 function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
   const [idx, setIdx] = useState(0); //for dropdown
@@ -25,7 +32,9 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [sessionEndTime, setSessionEndTime] = useState(0);
   const [usingDevice, setUsingDevice] = useState(true);
   const [petYcoor, setPetYcoor] = useState(Y_DEFAULT_W_DEVICE);
-
+  const [canvasLoaded, setCanvasLoaded] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
+  const canvasRef = useRef(null);
   async function updateSessionData(_sessionStatus) {
     console.log("fetch");
     fetch("/updateSessionData", {
@@ -62,6 +71,8 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
 
   //internal clock
   useEffect(() => {
+    setPageLoaded(true);
+    // console.log(canvasRef.current.childNodes[1].childNodes[0].style.display);
     const interval = setInterval(() => {
       setCurrentTime((currentTime) => currentTime + 1);
     }, 1000);
@@ -81,6 +92,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   };
 
   function handlePetChange(sign) {
+    setCanvasLoaded(false);
     var cur_idx = idx;
     if (cur_idx == 0 && sign === -1) cur_idx = petOptions.length - 1;
     else {
@@ -149,7 +161,31 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
       setPetYcoor(Y_DEFAULT_W_DEVICE);
     }
   };
-
+  const renderCanvasWaitingScreen = () => {
+    if (!canvasLoaded) {
+      if (pageLoaded && canvasRef.current.childNodes[1]) {
+        if (
+          canvasRef.current.childNodes[1].tagName == "DIV" &&
+          canvasRef.current.childNodes[1].childNodes[0].tagName == "CANVAS"
+        ) {
+          const _canvasLoaded =
+            canvasRef.current.childNodes[1].childNodes[0].style.display ===
+            "block";
+          console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
+          if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
+        } else {
+          setCanvasLoaded(true);
+        }
+      }
+      return (
+        <PacmanLoader
+          cssOverride={override}
+          color="#36d7b7"
+          speedMultiplier={2}
+        />
+      );
+    }
+  };
   return (
     <div className="App">
       <div class="container">
@@ -173,7 +209,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           // end session
           <div class="container home">
             <h3> Choose your pet </h3>{" "}
-            <div class="viewer"> {petOptions[pet].icon} </div>{" "}
+            <div class="viewer" ref={canvasRef}>
+              {renderCanvasWaitingScreen()}
+              {petOptions[pet].icon}
+            </div>{" "}
             <div>
               <FaAngleLeft
                 onClick={() => handlePetChange(-1)}
