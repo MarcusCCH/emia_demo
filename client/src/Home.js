@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, CSSProperties } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 
 import Pet, { petOptions } from "./Pet";
 import Dropdown from "./Dropdown";
@@ -19,7 +19,7 @@ const Y_HIGH = 500; //highest y coordinate (**distance from top)
 
 const override = {
   display: "block",
-  margin: "0 auto",
+  margin: "50px auto",
   borderColor: "red",
 };
 
@@ -171,6 +171,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           const _canvasLoaded =
             canvasRef.current.childNodes[1].childNodes[0].style.display ===
             "block";
+          console.log(_canvasLoaded);
           console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
           if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
         } else {
@@ -178,9 +179,9 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
         }
       }
       return (
-        <PacmanLoader
+        <BounceLoader
           cssOverride={override}
-          color="#36d7b7"
+          color="#1565c0"
           speedMultiplier={2}
         />
       );
@@ -208,8 +209,9 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
         ) : (
           // end session
           <div class="container home">
-            <h3> Choose your pet </h3>{" "}
+            <h3> Choose your pet </h3>
             <div class="viewer" ref={canvasRef}>
+              {/* <div></div> */}
               {renderCanvasWaitingScreen()}
               {petOptions[pet].icon}
             </div>{" "}
