@@ -14,9 +14,32 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
+const setPetObj = (pet) => {
+  let petObject = {
+    type: pet,
+    evolutionStagesXp: 0,
+    totalSuccessfulSession: 0,
+    totalFailedSession: 0,
+    evolutionStage: 0,
+    histogram: [
+      { successSession: 0, failedSession: 0 },
+      { successSession: 0, failedSession: 0 },
+      { successSession: 0, failedSession: 0 },
+    ],
+    loaded: false,
+  };
+  return petObject;
+};
 function Info() {
   const [userInfo, setUserInfo] = useState(null);
-  const [petInfo, setPetInfo] = useState([]);
+  // const [petInfo, setPetInfo] = useState([
+  //   petOptions.map((pet) => setPetObj(pet.label)),
+  // ]);
+  const [petInfo, setPetInfo] = useState([
+    setPetObj("fire bird"),
+    setPetObj("pig"),
+    setPetObj("hamster"),
+  ]);
   const [petIdx, setPetIdx] = useState(petOptions.length); //render all info page
   const [lastPetIdx, setLastPetIdx] = useState(-1);
   async function fetchUserInfo() {
@@ -30,36 +53,51 @@ function Info() {
     return info;
   }
   const fetchAllPetInfo = async () => {
-    let _info = [];
-    for (let i = 0; i < petOptions.length; i++) {
-      let info = await fetchPetInfo(i);
-      _info.push(info);
-      // console.log(`pet ${i} info: ${JSON.stringify(info)}`);
-      // setPetInfo([...petInfo, info]);
-      setPetInfo(_info);
-    }
+    const fire_bird = await fetchPetInfo(0);
+    const pig = await fetchPetInfo(1);
+    const hamster = await fetchPetInfo(2);
+    var pet_info = [];
+
+    pet_info[0] = fire_bird;
+    pet_info[1] = pig;
+    pet_info[2] = hamster;
+
+    setPetInfo(pet_info);
   };
 
   useEffect(() => {
+    console.log(petInfo);
     fetchUserInfo();
     fetchAllPetInfo();
+    // .then((info_arr)=>{
+    //   setPetInfo(info_arr);
+    // });
   }, []);
 
-  const allPetsWidget = petOptions.map((pet, index) => (
+  const allPetsWidget = petInfo.map((pet, index) => (
     <Card sx={{ width: 250 }}>
-      <CardMedia sx={{ height: 150 }} image={pet.image} />
+      <CardMedia sx={{ height: 150 }} image={petOptions[index].image} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {petOptions[index].label}
+          {pet.type}
         </Typography>
-        {petInfo[index] ? (
+        <p>Level {pet.evolutionStage + 1}</p>
+        <BorderLinearProgress
+          variant="determinate"
+          value={
+            (pet.totalSuccessfulSession /
+              evolutionStagesXp[pet.evolutionStage]) *
+            100
+          }
+        />
+        {/* {pet.loaded ? (
           <>
-            <p>Level {petInfo[index].evolutionStage + 1}</p>
+            <p>Level {pet.evolutionStage + 1}</p>
             <BorderLinearProgress
               variant="determinate"
               value={
-                (petInfo[index].totalSuccessfulSession /
-                  evolutionStagesXp[petInfo[index].evolutionStage]) *
+                (pet.totalSuccessfulSession /
+                  evolutionStagesXp[pet.evolutionStage]) *
                 100
               }
             />
@@ -68,7 +106,7 @@ function Info() {
           <>
             <Skeleton variant="rectangular" width={250} height={50} />
           </>
-        )}
+        )} */}
 
         <Typography variant="body2" color="text.secondary"></Typography>
       </CardContent>
@@ -80,7 +118,7 @@ function Info() {
             setLastPetIdx(index);
           }}
         >
-          Learn More
+          <div class="learnMoreButton">Learn More</div>
         </Button>
       </CardActions>
     </Card>
@@ -118,9 +156,11 @@ function Info() {
           if (petIdx < petOptions.length) setPetIdx(petOptions.length);
         }}
       >
-        <KeyboardArrowLeftIcon
-          color={petIdx < petOptions.length ? "primary" : "disabled"}
-        />
+        <div class="infoNavigationButtons">
+          <KeyboardArrowLeftIcon
+            color={petIdx < petOptions.length ? "primary" : "disabled"}
+          />
+        </div>
       </Button>
       <Button
         onClick={() => {

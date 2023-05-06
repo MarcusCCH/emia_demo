@@ -1,6 +1,6 @@
 import Spline from "@splinetool/react-spline";
 import { useEffect, useState } from "react";
-export const evolutionStagesXp = [100, 200]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
+export const evolutionStagesXp = [100, 200, 1000, 2000]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 export const petOptions = [
   {
     label: "fire bird",
@@ -71,7 +71,8 @@ function Pet({ petIdx, petYCoor, loginStatus }) {
 
   return (
     <div style={{ position: "absolute", top: `${petYCoor}px` }}>
-      {petOptions[petIdx].evolutionWidgets[evolutionStage]}
+      {" "}
+      {petOptions[petIdx].evolutionWidgets[evolutionStage]}{" "}
     </div>
   );
 }

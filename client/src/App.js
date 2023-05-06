@@ -32,6 +32,49 @@ const fab = {
   icon: <QuestionMarkIcon />,
   label: "Question mark",
 };
+const homeInstructions = [
+  {
+    content: "Login first to save your progress!",
+    target: ".navbar .login",
+    disableBeacon: true,
+
+    title: "Login",
+  },
+  {
+    target: ".home .changePet",
+    content: "Change your pet here! Different pets have different animation",
+    spotlightPadding: 20,
+    disableBeacon: true,
+    title: "Pet",
+  },
+  {
+    target: ".home .changeTime",
+    content: "Choose how long you want your focus session to be.",
+    disableBeacon: true,
+    title: "Time",
+  },
+  {
+    target: ".home .changeDevicePreference",
+    content: "Are you using our device with hologram on it?",
+    disableBeacon: true,
+    title: "Device",
+  },
+];
+
+const infoInstructions = [
+  {
+    content: "Click learn more to check each pet's progress",
+    target: ".learnMoreButton",
+    disableBeacon: true,
+    title: "Pet's progress",
+  },
+  {
+    target: ".infoNavigationButtons",
+    content: "Click left arrow to go back and right arrow to go forward",
+    disableBeacon: true,
+    title: "Navigation",
+  },
+];
 
 function App() {
   //states
@@ -39,34 +82,7 @@ function App() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const [steps, setSteps] = useState([
-    {
-      content: "Login first to save your progress!",
-      target: ".navbar .login",
-      disableBeacon: true,
-
-      title: "Login",
-    },
-    {
-      target: ".home .changePet",
-      content: "Change your pet here! Different pets have different animation",
-      spotlightPadding: 20,
-      disableBeacon: true,
-      title: "Pet",
-    },
-    {
-      target: ".home .changeTime",
-      content: "Choose how long you want your focus session to be.",
-      disableBeacon: true,
-      title: "Time",
-    },
-    {
-      target: ".home .changeDevicePreference",
-      content: "Are you using our device with hologram on it?",
-      disableBeacon: true,
-      title: "Device",
-    },
-  ]);
+  const [steps, setSteps] = useState(homeInstructions);
   const [run, setRun] = useState(false);
   const handleJoyrideCallback = (data) => {
     const { status, type } = data;
@@ -107,7 +123,20 @@ function App() {
   useEffect(() => {
     fetchLoginStatus();
   }, []);
-
+  const changePage = (idx) => {
+    console.log("changePage");
+    setPageIdx(idx);
+    switch (idx) {
+      case 0:
+        setSteps(homeInstructions);
+        break;
+      case 1:
+        setSteps(infoInstructions);
+        break;
+      default:
+        break;
+    }
+  };
   const SBAction = (
     <>
       <IconButton
@@ -124,7 +153,8 @@ function App() {
     <div>
       <NavBar
         pageIdx={pageIdx}
-        setPageIdx={setPageIdx}
+        // setPageIdx={setPageIdx}
+        changePage={changePage}
         loginStatus={loginStatus}
         setLoginStatus={setLoginStatus}
         className="navBar"

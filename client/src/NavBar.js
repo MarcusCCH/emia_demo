@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 
-function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
+function NavBar({ pageIdx, changePage, loginStatus, setLoginStatus }) {
   async function logout() {
     const res = await fetch("/logout", {
       method: "POST",
@@ -17,7 +17,7 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
   }
   const loginWidget = loginStatus ? (
     <>
-      <li class="links" onClick={() => setPageIdx(1)}>
+      <li class="links" onClick={() => changePage(1)}>
         <Button variant={pageIdx == 1 ? "contained" : "text"}> Info </Button>{" "}
       </li>{" "}
       <li class="links" onClick={() => logout()}>
@@ -25,7 +25,7 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
       </li>{" "}
     </>
   ) : (
-    <li class="links" onClick={() => setPageIdx(2)} className="login">
+    <li class="links" onClick={() => changePage(2)} className="login">
       <Button variant={pageIdx == 2 ? "contained" : "text"}> Login </Button>{" "}
     </li>
   );
@@ -42,7 +42,7 @@ function NavBar({ pageIdx, setPageIdx, loginStatus, setLoginStatus }) {
         USTudyPet{" "}
       </li>{" "}
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <li class="links" onClick={() => setPageIdx(0)}>
+        <li class="links" onClick={() => changePage(0)}>
           <Button variant={pageIdx == 0 ? "contained" : "text"}> Home </Button>{" "}
         </li>{" "}
         {loginWidget}{" "}

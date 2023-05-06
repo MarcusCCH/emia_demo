@@ -223,7 +223,7 @@ app.get("/getEvolutionStage/:petIdx", isLoggedIn, async (req, res) => {
 
 //update session data
 const timeOptions = [15, 30, 45]; //just for reference
-const evolutionStagesXp = [100, 500]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
+const evolutionStagesXp = [100, 500, 1000, 2000]; //need 100 minutes to evolve to stage 1, 200 minutes to evolve from stage 1 to 2
 
 const checkEvolutionStage = async (pet) => {
   let updatedPet = pet;

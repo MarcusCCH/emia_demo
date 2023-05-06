@@ -97,7 +97,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
 
   const startSession = () => {
     setSession(true);
-    setSessionEndTime(currentTime + sessionPeriod);
+    setSessionEndTime(currentTime + sessionPeriod * 60);
     setSBMessage("Session started!");
     setOpenSB(true);
     console.log(
