@@ -9,7 +9,8 @@ export const petOptions = [
       <Spline scene="https://prod.spline.design/VNGsgHmiPAzpvJU4/scene.splinecode" />
     ),
     evolutionWidgets: [
-      <Spline scene="https://prod.spline.design/VNGsgHmiPAzpvJU4/scene.splinecode" />,
+      <iframe width="1024" height="640" allowfullscreen src="https://v3d.net/jaj"></iframe>,
+      <iframe width="1024" height="640" allowfullscreen src="https://v3d.net/jah"></iframe>,
     ],
     image: "/fire_bird.png",
   },
