@@ -35,7 +35,7 @@ function NavBar({ pageIdx, changePage, loginStatus, setLoginStatus }) {
       <li>
         {" "}
         <img
-          src="/fire_bird.png"
+          src="/fire_bird_old.png"
           alt="fire_bird"
           style={{ width: "30px", height: "30px" }}
         />{" "}
