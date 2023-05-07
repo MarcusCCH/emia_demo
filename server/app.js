@@ -72,6 +72,10 @@ async function createPets() {
 }
 
 /* DANGER: do not uncomment below as it is database cleaning after each testings*/
+// Pet.deleteMany({ username: { $regex: ".*test.*" } }).then((users) => {
+//     console.log("deleted testing users", users);
+// });
+
 // User.deleteMany({})
 //   .then(() => {
 //     console.log("deleted all users");
@@ -106,10 +110,12 @@ passport.use(
     User.findOne({ username: username })
       .then((user) => {
         if (!user) {
-          return done(null, false);
+          return done(null, false, { error: "User not found" });
         }
         if (user.password != password) {
-          console.log("unauthorized session");
+          console.log("unauthorized session", {
+            error: "Check your username or password",
+          });
           return done(null, false);
         }
         return done(null, user);
@@ -135,50 +141,88 @@ app.get("/loginStatus", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  console.log(`user created: ${req.body}`);
+  // console.log(`user created: ${req.body}`);
   //TODO: add error handling (if pets creation is not success, how to handle user creation?)
-  const petsData = await createPets();
-  console.log(`petsData: ${petsData}`);
   //TODO: similarly, handle the error
   let createdUser;
   try {
-    createdUser = await User.create({
-      username: req.body.username,
-      password: req.body.password,
-      sessionNumber: 0,
-      favouritePet: null,
-      petsData: petsData,
+    User.findOne({ username: req.body.username }).then(async (user) => {
+      console.log("register found user:", user);
+      if (!user) {
+        console.log("there is no user with the same username");
+        const petsData = await createPets();
+        console.log(`petsData: ${petsData}`);
+        //there is no user with the same username
+        createdUser = await User.create({
+          username: req.body.username,
+          password: req.body.password,
+          sessionNumber: 0,
+          favouritePet: null,
+          petsData: petsData,
+        });
+        console.log("createdUser @try of register route", createdUser);
+        if (createdUser) {
+          //update pets reference to user
+          for (let i = 0; i < petsData.length; i++) {
+            const updatedPet = await Pet.updateOne(
+              { _id: petsData[i]._id },
+              { $set: { user: createdUser } }
+            );
+            console.log(`updated pet: ${updatedPet}`);
+          }
+          req.login(createdUser, (err) => {
+            if (err) {
+              console.log(err);
+            }
+            return res.redirect("/");
+          });
+        }
+      } else {
+        console.log("error: user already exists");
+
+        // return res.redirect("/");
+        return res.json({ error: "User already exists" });
+      }
     });
   } catch (error) {
     console.log(`error creating user: ${error}`);
-  } finally {
-    console.log(`created user: ${createdUser}`);
   }
-
-  //update pets reference to user
-  for (let i = 0; i < petsData.length; i++) {
-    const updatedPet = await Pet.updateOne(
-      { _id: petsData[i]._id },
-      { $set: { user: createdUser } }
-    );
-    console.log(`updated pet: ${updatedPet}`);
-  }
-  req.login(createdUser, (err) => {
-    if (err) {
-      console.log(err);
-    }
-    return res.redirect("/");
-  });
 });
 
-app.post("/login", passport.authenticate("local"), (req, res) => {
-  if (!req.user) {
-    console.log("undefined user");
-    res.redirect("/admin");
-  }
-  const date = new Date();
-  console.log(`User ID:${req.user._id} logged in at ${date}`);
-  res.redirect("/");
+// app.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     failureMessage: "Invalid username or password",
+//   }),
+//   (req, res) => {
+//     if (!req.user) {
+//       console.log("undefined user");
+//       return res.json({ error: "Unauthorized" });
+//     }
+//     const date = new Date();
+//     console.log(`User ID:${req.user._id} logged in at ${date}`);
+//     res.redirect("/");
+//   }
+// );
+
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", function (err, user, info) {
+    // console.log("hi");
+    if (err) {
+      // console.log("error", err);
+      return next(err);
+    }
+    if (!user) {
+      // console.log("error, user not found");
+      return res.json({ error: "Unauthorized login" });
+    }
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        console.log(loginErr);
+      }
+      return res.json({ success: "Login success" });
+    });
+  })(req, res, next);
 });
 
 app.post("/logout", (req, res, next) => {
