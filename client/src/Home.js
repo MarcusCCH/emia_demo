@@ -168,30 +168,30 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     }
   };
   const renderCanvasWaitingScreen = () => {
-    // if (!canvasLoaded) {
-    //   if (pageLoaded && canvasRef.current.childNodes[1]) {
-    //     if (
-    //       canvasRef.current.childNodes[1].tagName == "DIV" &&
-    //       canvasRef.current.childNodes[1].childNodes[0].tagName == "CANVAS"
-    //     ) {
-    //       const _canvasLoaded =
-    //         canvasRef.current.childNodes[1].childNodes[0].style.display ===
-    //         "block";
-    //       // console.log(_canvasLoaded);
-    //       // console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
-    //       if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
-    //     } else {
-    //       setCanvasLoaded(true);
-    //     }
-    //   }
-    //   return (
-    //     <BounceLoader
-    //       cssOverride={override}
-    //       color="#1565c0"
-    //       speedMultiplier={2}
-    //     />
-    //   );
-    // }
+    if (!canvasLoaded) {
+      if (pageLoaded && canvasRef.current.childNodes[1]) {
+        if (
+          canvasRef.current.childNodes[1].tagName == "DIV" &&
+          canvasRef.current.childNodes[1].childNodes[0].tagName == "CANVAS"
+        ) {
+          const _canvasLoaded =
+            canvasRef.current.childNodes[1].childNodes[0].style.display ===
+            "block";
+          // console.log(_canvasLoaded);
+          // console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
+          if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
+        } else {
+          setCanvasLoaded(true);
+        }
+      }
+      return (
+        <BounceLoader
+          cssOverride={override}
+          color="#1565c0"
+          speedMultiplier={2}
+        />
+      );
+    }
   };
   return (
     <div className="App">
