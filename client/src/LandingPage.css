@@ -1,9 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-.container {
+.landing-container {
     background: #f0f0f0;
     box-sizing: border-box;
     display: flex;
@@ -25,12 +20,13 @@
     align-items: center;
     text-align: center;
     font-weight: bold;
+    flex-direction: row;
     font-size: calc(1vw + 1vh);
     visibility: hidden;
     /* text-shadow: 0, 0, 0 #5ab0cdba; */
 }
 
-.text{
+.text {
     font-weight: bold;
     color: #209cd5;
     text-align: center;
@@ -75,7 +71,7 @@
         text-shadow: 8px 8px 8px #5ab0cdba;
         opacity: 1
     }
-    100%{
+    100% {
         width: 480px;
         height: 240px;
         background: #fafafa;
@@ -83,5 +79,35 @@
         font-size: 54px;
         text-shadow: 8px 8px 8px;
         opacity: 0
+    }
+}
+
+.box img {
+    animation: anime-img 3s cubic-bezier(0.16, 1, 0.3, 1) 1s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes anime-img {
+    0% {
+        width: 30px;
+        height: 30px;
+    }
+    25% {
+        width: 40px;
+        height: 40px;
+    }
+    50% {
+        width: 50px;
+        height: 50px;
+    }
+    75% {
+        width: 70px;
+        height: 70px;
+        opacity: 1;
+    }
+    100% {
+        width: 80px;
+        height: 80px;
+        opacity: 0;
     }
 }
