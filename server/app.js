@@ -72,8 +72,8 @@ async function createPets() {
 }
 
 /* DANGER: do not uncomment below as it is database cleaning after each testings*/
-// Pet.deleteMany({ username: { $regex: ".*test.*" } }).then((users) => {
-//     console.log("deleted testing users", users);
+// User.deleteMany({ username: { $regex: ".*test.*" } }).then((users) => {
+//   console.log("deleted testing users", users);
 // });
 
 // User.deleteMany({})
@@ -174,7 +174,7 @@ app.post("/register", async (req, res) => {
             if (err) {
               console.log(err);
             }
-            return res.redirect("/");
+            return res.json({ success: "User registered" });
           });
         }
       } else {
