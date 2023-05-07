@@ -43,7 +43,7 @@ const homeInstructions = [
   },
   {
     target: ".home .changePet",
-    content: "Change your pet here! Different pets have different animation",
+    content: "Change your pet here! Pets will evolve as you study more.",
     spotlightPadding: 20,
     disableBeacon: true,
     title: "Pet",
@@ -113,7 +113,12 @@ function App() {
       setSBMessage={setSBMessage}
     />,
     <Info />,
-    <Login />,
+    <Login
+      setPageIdx={setPageIdx}
+      setOpenSB={setOpenSB}
+      setSBMessage={setSBMessage}
+      setLoginStatus={setLoginStatus}
+    />,
     <LandingPage onAnimationComplete={() => {
       setAnimationComplete(true)
       console.log("animation complete");
@@ -142,7 +147,7 @@ function App() {
   }
   useEffect(() => {
     fetchLoginStatus();
-  }, []);
+  }, [loginStatus]);
   const changePage = (idx) => {
     console.log("changePage");
     setPageIdx(idx);
