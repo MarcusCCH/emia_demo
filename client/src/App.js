@@ -5,11 +5,16 @@ import { useState, useEffect } from "react";
 
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 
+//socket
+import webSocket from "socket.io-client";
+
 //components
 import Home from "./Home";
 import NavBar from "./NavBar";
 import Info from "./Info";
 import Login from "./Login";
+import Rooms from "./Rooms";
+import Socket from "./Socket";
 
 //mui
 import Button from "@mui/material/Button";
@@ -82,8 +87,13 @@ function App() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  //socket
+  const [enteredRoom, setEnteredRoom] = useState(false);
+
+  //joyride
   const [steps, setSteps] = useState(homeInstructions);
   const [run, setRun] = useState(false);
+
   const handleJoyrideCallback = (data) => {
     const { status, type } = data;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED, STATUS.PAUSED];
@@ -107,6 +117,7 @@ function App() {
     />,
     <Info />,
     <Login />,
+    <Rooms />,
   ];
   async function fetchLoginStatus() {
     const resposne = await fetch("/loginStatus");
@@ -123,6 +134,7 @@ function App() {
   useEffect(() => {
     fetchLoginStatus();
   }, []);
+
   const changePage = (idx) => {
     console.log("changePage");
     setPageIdx(idx);
@@ -132,6 +144,9 @@ function App() {
         break;
       case 1:
         setSteps(infoInstructions);
+        break;
+      case 3:
+        setEnteredRoom(true);
         break;
       default:
         break;
@@ -191,6 +206,7 @@ function App() {
           {fab.icon}
         </Fab>
       </Tooltip>
+      <Socket currentUser={currentUser} enteredRoom={enteredRoom} />
     </div>
   );
 }

@@ -171,8 +171,6 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           const _canvasLoaded =
             canvasRef.current.childNodes[1].childNodes[0].style.display ===
             "block";
-          console.log(_canvasLoaded);
-          console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
           if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
         } else {
           setCanvasLoaded(true);

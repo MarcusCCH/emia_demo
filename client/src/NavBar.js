@@ -20,6 +20,9 @@ function NavBar({ pageIdx, changePage, loginStatus, setLoginStatus }) {
       <li class="links" onClick={() => changePage(1)}>
         <Button variant={pageIdx == 1 ? "contained" : "text"}> Info </Button>{" "}
       </li>{" "}
+      <li class="links" onClick={() => changePage(3)}>
+        <Button variant={pageIdx == 3 ? "contained" : "text"}> Rooms </Button>{" "}
+      </li>{" "}
       <li class="links" onClick={() => logout()}>
         <Button variant="text"> Logout </Button>{" "}
       </li>{" "}

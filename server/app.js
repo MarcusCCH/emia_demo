@@ -12,6 +12,9 @@ const crypto = require("crypto");
 const session = require("express-session");
 const isLoggedIn = require("./middleware/index").isLoggedIn;
 
+//socket
+const { Server } = require("socket.io");
+
 //models
 const User = require("./model/User");
 const Pet = require("./model/Pet");
@@ -29,6 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
+const server = require("http")
+  .Server(app)
+  .listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+  });
 /* ----------------database---------------- */
 mongoose
   .connect(
@@ -86,6 +94,40 @@ async function createPets() {
 //   .catch((err) => {
 //     console.log(`error deleting pets: ${err}`);
 //   });
+
+/* ---------------- socket io ---------------- */
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+const authToken = "ustudypet";
+const authorizeUser = (message) => {
+  return message.auth_token === authToken;
+};
+const users = [];
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  //on login
+  socket.on("login", (message) => {
+    if (authorizeUser(message)) {
+      if (!users.includes(socket.id)) {
+        users.push({ socketId: socket.id, userName: message.user });
+        console.log(users);
+      }
+      io.sockets.emit("login", message.content);
+    }
+  });
+
+  //on enter general rooms
+  socket.on("enterRoom", (message) => {
+    io.sockets.emit("enterRoom", message.content);
+  });
+
+  //on enter private rooms
+});
 
 /* ----------------login and register---------------- */
 var sess = {
@@ -211,6 +253,9 @@ app.get("/info/:petIdx", isLoggedIn, async (req, res) => {
   // console.log(foundPet);
   res.json(foundPet);
 });
+app.get("/commonRoomUsers", isLoggedIn, (req, res) => {
+  console.log(users);
+});
 
 app.get("/getEvolutionStage/:petIdx", isLoggedIn, async (req, res) => {
   const foundPet = await Pet.findOne({
@@ -300,6 +345,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on ${PORT}`);
+// });
