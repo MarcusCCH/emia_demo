@@ -1,7 +1,7 @@
 //styling
 import "./App.css";
 //react
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 
@@ -10,6 +10,7 @@ import Home from "./Home";
 import NavBar from "./NavBar";
 import Info from "./Info";
 import Login from "./Login";
+import LandingPage from "./LandingPage";
 
 //mui
 import Button from "@mui/material/Button";
@@ -76,9 +77,15 @@ const infoInstructions = [
   },
 ];
 
+// make sure start page will only run once
+var start_page_do_once = true;
+
+let test_music = new Audio('music/just-relax.mp3')
+
 function App() {
   //states
-  const [pageIdx, setPageIdx] = useState(0);
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const [pageIdx, setPageIdx] = useState(3);
   const [loginStatus, setLoginStatus] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -107,7 +114,20 @@ function App() {
     />,
     <Info />,
     <Login />,
+    <LandingPage onAnimationComplete={() => {
+      setAnimationComplete(true)
+      console.log("animation complete");
+    }} />,
   ];
+
+  useLayoutEffect(() => {
+    test_music.play();
+    if (start_page_do_once) {
+      setTimeout(() => setPageIdx(0), 4000);
+      start_page_do_once = false;
+    }
+  }, [animationComplete]);
+
   async function fetchLoginStatus() {
     const resposne = await fetch("/loginStatus");
     const data = await resposne.json();
