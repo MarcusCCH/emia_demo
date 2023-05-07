@@ -21,10 +21,12 @@ function Login({ setSBMessage, setOpenSB, setPageIdx, setLoginStatus }) {
       setSBMessage(data.error);
       setOpenSB(true);
       setPageIdx(2); //go back to login page
+    } else if (data.success) {
+      setSBMessage(data.success);
+      setOpenSB(true);
+      setPageIdx(0); //go back to login page
+      setLoginStatus(true);
     }
-
-    // action="/register"
-    //     method="POST"
   }
   async function handleLogin(event) {
     event.preventDefault();

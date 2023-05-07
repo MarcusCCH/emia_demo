@@ -28,6 +28,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const [idx, setIdx] = useState(0); //for dropdown
   const [pet, setPet] = useState(0); //for passing between components
   const [session, setSession] = useState(false); // set if session has started
+  const [sessionStatus, setSessionStatus] = useState(0); //0 : not started, 1: succeeded, 2: failed
   const [currentTime, setCurrentTime] = useState(0); // internal clock
   const [sessionEndTime, setSessionEndTime] = useState(0);
   const [usingDevice, setUsingDevice] = useState(true);
@@ -58,13 +59,10 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
 
   const checkSessionStatus = () => {
     if (sessionEndTime < currentTime && session) {
-      if (loginStatus) {
-        updateSessionData(true);
-      }
       setSBMessage(`Session ended! You have earned ${sessionPeriod} points!`);
       setOpenSB(true);
       resetSession();
-
+      setSessionStatus(1);
       setSession(false);
     }
   };
@@ -72,13 +70,21 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   //internal clock
   useEffect(() => {
     setPageLoaded(true);
-    // console.log(canvasRef.current.childNodes[1].childNodes[0].style.display);
     const interval = setInterval(() => {
       setCurrentTime((currentTime) => currentTime + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (loginStatus) {
+      if (sessionStatus == 1) {
+        updateSessionData(true);
+      } else if (sessionStatus == 2) {
+        updateSessionData(false);
+      }
+    }
+  }, [sessionStatus]);
   const timeOptions = [
     { label: "15 minutes", value: 15 },
 
@@ -119,8 +125,8 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
     );
   };
   const stopSession = () => {
-    updateSessionData(false);
     setSession(false);
+    setSessionStatus(2);
     setSBMessage("Session stopped!");
     setOpenSB(true);
     resetSession();
@@ -171,8 +177,8 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
           const _canvasLoaded =
             canvasRef.current.childNodes[1].childNodes[0].style.display ===
             "block";
-          console.log(_canvasLoaded);
-          console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
+          // console.log(_canvasLoaded);
+          // console.log(canvasRef.current.childNodes[1].childNodes[0].tagName);
           if (_canvasLoaded) setCanvasLoaded(_canvasLoaded);
         } else {
           setCanvasLoaded(true);
