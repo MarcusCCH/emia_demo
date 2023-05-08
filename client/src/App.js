@@ -22,7 +22,7 @@ import Fab from "@mui/material/Fab";
 import Tooltip from "@mui/material/Tooltip";
 
 const fabStyle = {
-  position: "absolute",
+  position: "fixed",
   bottom: 16,
   right: 16,
 };
@@ -80,7 +80,7 @@ const infoInstructions = [
 // make sure start page will only run once
 var start_page_do_once = true;
 
-let test_music = new Audio('music/just-relax.mp3')
+let test_music = new Audio("music/just-relax.mp3");
 
 function App() {
   //states
@@ -100,6 +100,8 @@ function App() {
     }
   };
 
+  const [sessionStart, setSessionStart] = useState(false);
+
   //snack bar(notification for user)
   const [openSB, setOpenSB] = useState(false);
   const [SBMessage, setSBMessage] = useState("");
@@ -111,6 +113,7 @@ function App() {
       currentUser={currentUser}
       setOpenSB={setOpenSB}
       setSBMessage={setSBMessage}
+      setSessionStart={setSessionStart}
     />,
     <Info />,
     <Login
@@ -119,10 +122,12 @@ function App() {
       setSBMessage={setSBMessage}
       setLoginStatus={setLoginStatus}
     />,
-    <LandingPage onAnimationComplete={() => {
-      setAnimationComplete(true)
-      console.log("animation complete");
-    }} />,
+    <LandingPage
+      onAnimationComplete={() => {
+        setAnimationComplete(true);
+        console.log("animation complete");
+      }}
+    />,
   ];
 
   useLayoutEffect(() => {
@@ -206,16 +211,18 @@ function App() {
           },
         }}
       />
-      <Tooltip title="Steps to start">
-        <Fab
-          sx={fab.sx}
-          aria-label={fab.label}
-          color={fab.color}
-          onClick={() => setRun(true)}
-        >
-          {fab.icon}
-        </Fab>
-      </Tooltip>
+      {pageIdx <= 1 && !sessionStart && (
+        <Tooltip title="Steps to start">
+          <Fab
+            sx={fab.sx}
+            aria-label={fab.label}
+            color={fab.color}
+            onClick={() => setRun(true)}
+          >
+            {fab.icon}
+          </Fab>
+        </Tooltip>
+      )}
     </div>
   );
 }

@@ -23,7 +23,13 @@ const override = {
   borderColor: "red",
 };
 
-function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
+function Home({
+  loginStatus,
+  currentUser,
+  setOpenSB,
+  setSBMessage,
+  setSessionStart,
+}) {
   const [sessionPeriod, setSessionPeriod] = useState(15);
   const [idx, setIdx] = useState(0); //for dropdown
   const [pet, setPet] = useState(0); //for passing between components
@@ -77,6 +83,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   }, []);
 
   useEffect(() => {
+    setSessionStart(false);
     if (loginStatus) {
       if (sessionStatus == 1) {
         updateSessionData(true);
@@ -116,6 +123,7 @@ function Home({ loginStatus, currentUser, setOpenSB, setSBMessage }) {
   const startSession = () => {
     setSession(true);
     setSessionEndTime(currentTime + sessionPeriod * 60);
+    setSessionStart(true);
     setSBMessage("Session started!");
     setOpenSB(true);
     console.log(
