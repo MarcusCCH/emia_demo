@@ -23,11 +23,11 @@ const LandingPage = (props) => {
       {show && (
         <div className="box" onAnimationEnd={onAnimationComplete}>
           <img
-            src="/fire_bird_old.png"
+            src="/landing_bird.png"
             alt="fire_bird"
             style={{ width: "30px", height: "30px" }}
           />{" "}
-          <div className="text">USTudyPet </div>{" "}
+          <div className="text"> USTudyPet </div>{" "}
         </div>
       )}{" "}
     </div>
