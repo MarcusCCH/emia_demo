@@ -15,7 +15,7 @@ const Y_OFFSET = 20; //how much pet moves per click
 const Y_DEFAULT_W_DEVICE = 400; //default y coordinate
 const Y_DEFAULT_WO_DEVICE = 200; //lowest y coordinate without device
 const Y_LOW = 300; //lowest y coordinate (**distance from top)
-const Y_HIGH = 500; //highest y coordinate (**distance from top)
+const Y_HIGH = 800; //highest y coordinate (**distance from top)
 
 const override = {
   display: "block",
@@ -122,15 +122,13 @@ function Home({
 
   const startSession = () => {
     setSession(true);
-    setSessionEndTime(currentTime + sessionPeriod * 60);
+    let number = Number(currentTime) + Number(sessionPeriod);
+    setSessionEndTime(number);
     setSessionStart(true);
     setSBMessage("Session started!");
+    console.log(typeof number);
     setOpenSB(true);
-    console.log(
-      `end time: ${
-        currentTime + sessionPeriod * 60
-      }, start-time: ${currentTime}`
-    );
+    console.log(`end time: ${number}, start-time: ${currentTime}`);
   };
   const stopSession = () => {
     setSession(false);
@@ -210,10 +208,7 @@ function Home({
           <div class="container">
             {" "}
             {renderButtons()}{" "}
-            <p>
-              Time left: {Math.floor((sessionEndTime - currentTime) / 60)}:{" "}
-              {(sessionEndTime - currentTime) % 60}{" "}
-            </p>{" "}
+            <p>Time left: 0: {sessionEndTime - currentTime} </p>{" "}
             <Button variant="outlined" onClick={() => stopSession()}>
               stop!
             </Button>{" "}
@@ -223,11 +218,11 @@ function Home({
         ) : (
           // end session
           <div class="container home">
-            <h3> Choose your pet </h3>
+            <h3> Choose your pet </h3>{" "}
             <div class="viewer" ref={canvasRef}>
-              {/* <div></div> */}
-              {renderCanvasWaitingScreen()}
-              {petOptions[pet].icon}
+              {" "}
+              {/* <div></div> */} {renderCanvasWaitingScreen()}{" "}
+              {petOptions[pet].icon}{" "}
             </div>{" "}
             <div>
               <FaAngleLeft
@@ -255,7 +250,7 @@ function Home({
                 value={sessionPeriod}
                 onChange={handleTimeChange}
               />{" "}
-            </div>
+            </div>{" "}
             <div>
               <label for="usingDevice"> Using device </label>{" "}
               <input
