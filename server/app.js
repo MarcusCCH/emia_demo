@@ -320,11 +320,9 @@ app.post("/updateSessionData", isLoggedIn, async (req, res) => {
           totalSuccessfulSession: sessionPeriod,
         },
       }
-    ).then((pet) => {
-      updateHistogram(pet, sessionPeriod, true);
-      checkEvolutionStage(pet);
-      console.log(pet);
-    });
+    );
+    updateHistogram(pet, sessionPeriod, true);
+    checkEvolutionStage(pet);
     console.log(pet);
   } else {
     //increment failed sessions
